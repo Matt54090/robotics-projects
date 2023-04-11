@@ -1,0 +1,9 @@
+pip
+setuptools
+flake8
+isort
+pylint
+cpplint
+cmake
+cmakelint
+testresources

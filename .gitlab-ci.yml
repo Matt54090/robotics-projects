@@ -1,0 +1,43 @@
+stages:
+    - general
+    - lang_check
+
+General Test:
+    stage: general
+    tags:
+        - birdbot
+    script:
+        - echo "This is the general test stage."
+        - scm/scripts/ci/general_ci.sh
+
+Bash Test:
+    stage: lang_check
+    tags:
+        - birdbot
+    script:
+        - echo "This is the Bash Script CI check stage."
+        - scm/scripts/ci/bash_ci.sh
+
+C++ Language Test:
+    stage: lang_check
+    tags:
+        - birdbot
+    script:
+        - echo "This is the CPP language CI check stage."
+        - scm/scripts/ci/cpp_ci.sh
+
+C Language Test:
+    stage: lang_check
+    tags:
+        - birdbot
+    script:
+        - echo "This is the C language CI check stage."
+        - scm/scripts/ci/clang_ci.sh
+
+Python Test:
+    stage: lang_check
+    tags:
+        - birdbot
+    script:
+        - echo "This is the python CI check stage."
+        - scm/scripts/ci/python_ci.sh
