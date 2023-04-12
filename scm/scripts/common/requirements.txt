@@ -1,9 +1,9 @@
 pip
 setuptools
-flake8
-isort
-pylint
-cpplint
-cmake
-cmakelint
+flake8==6.0.0
+isort==5.12.0
+pylint==2.17.2
+cpplint==1.6.1
+cmake>=3.11
+cmakelint==1.4.2
 testresources
