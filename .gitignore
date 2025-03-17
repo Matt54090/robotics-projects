@@ -1,0 +1,14 @@
+.*.swp
+*.pyc
+*.o
+
+/*.bin
+/out
+
+/TAGS
+/tags
+/cscope*
+
+out/
+
+test
