@@ -10,7 +10,7 @@ BraceWrapping:
   AfterControlStatement: true
   BeforeElse: true
   BeforeCatch: true
-PointerAlignment: Left
+PointerAlignment: Right
 IndentCaseLabels: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortEnumsOnASingleLine: false
