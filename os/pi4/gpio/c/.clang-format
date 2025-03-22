@@ -15,4 +15,19 @@ IndentCaseLabels: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortEnumsOnASingleLine: false
 SortIncludes: true
-IncludeBlocks: Merge
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<((sys|linux|netinet|arpa|bits|x86|unistd|fcntl|str*|std*|signal|math|errno|dirent|pi*)[/\\]?.*)>$'
+    Priority: 1
+    SortPriority: 0
+    CaseSensitive: false
+
+  - Regex: '^<(?!jcrt/)[^/]+/.*>$'
+    Priority: 2
+    SortPriority: 1
+    CaseSensitive: false
+
+  - Regex: '^<jcrt/.*>$'
+    Priority: 3
+    SortPriority: 2
+    CaseSensitive: false

@@ -7,75 +7,42 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include <errno.h>
 #include <pigpio.h>
 #include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
 
-enum {
-    OFF,
-    ON,
-    IO_PORT = 18
-};
+#include <jcrt/common.h>
 
-static void _handler_for_ctrl_c(int signo);
-static inline int _check_permission(void);
-
-static int g_escape = OFF;
+#define DEBUG
 
 int main(void)
 {
-    if (_check_permission() < 0)
-    {
-        fprintf(stderr, "[JCRT ERR] Need to execute as root!\n");
-        return -EPERM;
-    }
+    FORMULA_GUARD(check_permission() < 0, -EPERM, "Need to execute as root!");
 
     struct sigaction sig_act = {
-        .sa_handler = _handler_for_ctrl_c,
+        .sa_handler = handler_for_ctrl_c,
         .sa_flags = 0,
     };
     sigemptyset(&sig_act.sa_mask);
     sigaction(SIGINT, &sig_act, NULL);
 
-    if (gpioInitialise() < 0)
-    {
-        fprintf(stderr, "[JCRT ERR] failed init for pigpio.\n");
-        return -EPERM;
-    }
+    FORMULA_GUARD(gpioInitialise() < 0, -EPERM, "Failed init for pigpio.");
 
     gpioSetMode(IO_PORT, PI_OUTPUT);
 
     while (g_escape == OFF)
     {
         gpioWrite(IO_PORT, ON);
-        printf("[JCRT] GPIO set!\n");
+        DBG_MSG("GPIO set!");
         sleep(1);
 
         gpioWrite(IO_PORT, OFF);
-        printf("[JCRT] GPIO clear.\n");
+        DBG_MSG("GPIO clear.");
         sleep(1);
     }
 
     gpioWrite(IO_PORT, OFF);
     gpioTerminate();
-    printf("[JCRT] Exit the gpio_lib.c\n");
+    DBG_MSG("Exit the gpio_lib.c");
 
     return 0;
-}
-
-static void _handler_for_ctrl_c(int signo)
-{
-    (void)signo;
-
-    g_escape = ON;
-}
-
-static inline int _check_permission(void)
-{
-    if (getuid() == 0 || geteuid() == 0)
-        return 0;
-
-    return -EPERM;
 }

@@ -9,17 +9,20 @@ CC = gcc
 CFLAGS = -W -Wall
 TARGET = test
 
+GIT_ROOT = $(shell git rev-parse --show-toplevel)
+INCLUDES = $(GIT_ROOT)/common/include
+
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ -I$(INCLUDES)
 
 .SUFFIXES: .c .o
 .c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(INCLUDES)
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -rf $(OBJS) $(TARGET)
