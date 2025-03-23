@@ -1,12 +1,1 @@
-# Build
-
-```
-$ make
-```
-
-
-# Execute the Binary
-
-```
-$ sudo ./test
-```
+../../../../../common/readme/GPIO_README.md

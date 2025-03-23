@@ -7,7 +7,7 @@
 
 CC = gcc
 CFLAGS = -W -Wall
-TARGET = test
+TARGET = jcrt
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
 INCLUDES = $(GIT_ROOT)/common/include
