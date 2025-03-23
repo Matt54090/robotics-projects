@@ -7,7 +7,6 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include <signal.h>
 #include <stdint.h>
 #include <sys/mman.h>
 
@@ -32,14 +31,8 @@ static int _write_gpio(struct gpio_mmio *mmio, int pin, int value);
 
 int main(void)
 {
-    FORMULA_GUARD(check_permission() < 0, -EPERM, "Need to execute as root!");
-
-    struct sigaction sig_act = {
-        .sa_handler = handler_for_ctrl_c,
-        .sa_flags = 0,
-    };
-    sigemptyset(&sig_act.sa_mask);
-    sigaction(SIGINT, &sig_act, NULL);
+    int ret = init_jcrt();
+    FORMULA_GUARD(ret < 0, ret, "Failed to initialize jcrt.");
 
     struct gpio_mmio *mmio = _init_gpio();
     FORMULA_GUARD(mmio == NULL, -EPERM, "");

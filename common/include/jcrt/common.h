@@ -4,6 +4,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -87,7 +88,30 @@ enum gpio_info_e {
     TOTAL_GPIO = 58
 };
 
+static inline int init_jcrt(void);
+static inline void handler_for_ctrl_c(int signo);
+static inline int check_permission(void);
+
 int g_escape = OFF;
+
+static inline int init_jcrt(void)
+{
+    int ret = check_permission();
+    FORMULA_GUARD(ret < 0, -EPERM, ERR_INVALID_RET);
+
+    struct sigaction sig_act = {
+        .sa_handler = handler_for_ctrl_c,
+        .sa_flags = 0,
+    };
+
+    ret = sigemptyset(&sig_act.sa_mask);
+    FORMULA_GUARD(ret < 0, -EPERM, ERR_INVALID_RET);
+
+    ret = sigaction(SIGINT, &sig_act, NULL);
+    FORMULA_GUARD(ret < 0, -EPERM, ERR_INVALID_RET);
+
+    return 0;
+}
 
 static inline void handler_for_ctrl_c(int signo)
 {

@@ -9,7 +9,6 @@
 
 #include <dirent.h>
 #include <math.h>
-#include <signal.h>
 
 #include <jcrt/common.h>
 
@@ -51,19 +50,13 @@ static inline int _close_gpio(int fd);
 
 int main(void)
 {
-    FORMULA_GUARD(check_permission() < 0, -EPERM, "Need to execute as root!");
-
-    struct sigaction sig_act = {
-        .sa_handler = handler_for_ctrl_c,
-        .sa_flags = 0,
-    };
-    sigemptyset(&sig_act.sa_mask);
-    sigaction(SIGINT, &sig_act, NULL);
+    int ret = init_jcrt();
+    FORMULA_GUARD(ret < 0, ret, "Failed to initialize jcrt.");
 
     struct gpio_sysfs *gpio = _init_gpio();
     FORMULA_GUARD(gpio == NULL, -EPERM, "");
 
-    int ret = _set_gpio_output(gpio, IO_PORT);
+    ret = _set_gpio_output(gpio, IO_PORT);
     if (ret == 0)
     {
         while (g_escape == OFF)
