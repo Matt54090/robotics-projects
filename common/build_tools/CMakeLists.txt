@@ -5,8 +5,17 @@
 #
 # See the LICENSE file in the project root for more details.
 
+# set minimum cmake version
 cmake_minimum_required(VERSION 3.10)
 
+# set the build type
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE
+      debug
+      CACHE STRING "Build type" FORCE)
+endif()
+
+# set the project name
 project(
   jcrt
   VERSION 0.0.1
@@ -21,7 +30,7 @@ if(Git_FOUND)
     OUTPUT_VARIABLE GIT_DIR
     ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 else()
-  set(GIT_DIR "../")
+  set(GIT_DIR "../../")
 endif()
 
 # include the common source files
@@ -34,7 +43,12 @@ file(GLOB JCRT_SRC *.c)
 add_executable(${PROJECT_NAME} ${JCRT_SRC})
 
 # set the compile option for the target
-target_compile_options(${PROJECT_NAME} PRIVATE -W -Wall -g -ggdb)
+set(COMFILE_OPTIONS -W -Wall -g -ggdb)
+if(CMAKE_BUILD_TYPE STREQUAL "debug")
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DEBUG)
+  list(APPEND COMFILE_OPTIONS -DDEBUG)
+endif()
+target_compile_options(${PROJECT_NAME} PRIVATE ${COMFILE_OPTIONS})
 
 # link the external library
 target_link_libraries(${PROJECT_NAME} pigpio)

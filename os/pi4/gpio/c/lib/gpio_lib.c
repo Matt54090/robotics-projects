@@ -11,8 +11,6 @@
 
 #include <jcrt/common.h>
 
-#define DEBUG
-
 int main(void)
 {
     int ret = gpioInitialise();

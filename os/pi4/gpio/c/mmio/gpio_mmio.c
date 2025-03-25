@@ -12,8 +12,6 @@
 
 #include <jcrt/common.h>
 
-#define DEBUG
-
 enum {
     BLOCK_SIZE = 4096,
 };

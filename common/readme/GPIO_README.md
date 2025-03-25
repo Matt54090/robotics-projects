@@ -15,11 +15,26 @@ You can use the Makefile to build as below.
 $ make
 ```
 
+The default BUILD_MODE value is set to **debug**.
+If you want to not show any message from application, build as release mode.
+
+```
+$ make BUILD_MODE=release
+```
+
 Also, can use the CMake to build as below.
 
 ```
 $ mkdir -p build && cd build
 $ cmake ../
+$ make
+```
+
+When using the CMake with release mode, refer to the below commands.
+
+```
+$ mkdir -p build && cd build
+$ cmake -DCMAKE_BUILD_TYPE=release ../
 $ make
 ```
 
