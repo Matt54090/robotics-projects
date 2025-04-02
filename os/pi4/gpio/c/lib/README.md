@@ -1,1 +1,1 @@
-../../../../../common/readme/GPIO_README.md
+../../../../../common/readme/Interface_README.md
