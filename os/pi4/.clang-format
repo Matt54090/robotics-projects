@@ -17,7 +17,7 @@ AllowShortEnumsOnASingleLine: false
 SortIncludes: true
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '^<((sys|linux|netinet|arpa|bits|x86|unistd|fcntl|str*|std*|signal|math|errno|dirent|pi*)[/\\]?.*)>$'
+  - Regex: '^<((sys|linux|netinet|arpa|bits|x86|unistd|fcntl|str*|std*|signal|math|errno|dirent|pthread|pi*|libserial*)[/\\]?.*)>$'
     Priority: 1
     SortPriority: 0
     CaseSensitive: false

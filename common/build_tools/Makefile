@@ -11,6 +11,7 @@ RESET := \033[0m
 
 CC = gcc
 CFLAGS = -W -Wall -g -ggdb
+LIBS = -lpthread -lpigpio -lserialport
 TARGET = jcrt
 
 BUILD_MODE ?= debug
@@ -31,7 +32,7 @@ all: $(TARGET)
 	@printf $(BUILD_MSG)
 
 $(TARGET): $(OBJS)
-	$(CC) -o $@ $^ -lpigpio -I$(INCLUDES)
+	$(CC) -o $@ $^ $(LIBS) -I$(INCLUDES)
 
 .SUFFIXES: .c .o
 .c.o:

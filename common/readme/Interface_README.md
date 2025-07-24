@@ -3,7 +3,7 @@
 Install the package below,
 
 ```
-$ sudo apt install -y pigpio
+$ sudo apt install -y pigpio libserialport-dev
 ```
 
 

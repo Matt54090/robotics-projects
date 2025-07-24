@@ -51,4 +51,4 @@ endif()
 target_compile_options(${PROJECT_NAME} PRIVATE ${COMFILE_OPTIONS})
 
 # link the external library
-target_link_libraries(${PROJECT_NAME} pigpio)
+target_link_libraries(${PROJECT_NAME} pthread pigpio serialport)
