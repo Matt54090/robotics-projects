@@ -14,7 +14,8 @@ pwd
 echo_func "[scm] clang-format checking" 0
 FILES=$(find . \
     -type f \
-    -not -path "${BUILD_DIR}" \
+    -not -path "${BUILD_DIR}" -a \
+    -not -path "${DUMMY_DIR}" \
     \( -name "*.c" -o -name "*.h" \))
 for FILE in ${FILES}
 do

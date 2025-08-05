@@ -10,8 +10,7 @@ GREEN := \033[0;32m
 RESET := \033[0m
 
 GIT_ROOT = $(shell git rev-parse --show-toplevel)
-
-UNAME := $(shell uname -m)
+DUMMY_ROOT = $(GIT_ROOT)/common/dummy
 
 CC = gcc
 CFLAGS = -W -Wall -g -ggdb
@@ -20,9 +19,12 @@ TARGET = jcrt
 LIBS = -lpthread -lpigpio -lserialport
 INCLUDES = $(GIT_ROOT)/common/include
 
+UNAME := $(shell uname -m)
 ifeq ($(UNAME), x86_64)
-	LIBS += -L$(GIT_ROOT)/common/dummy/lib
-	INCLUDES += -I$(GIT_ROOT)/common/dummy/include
+	LIBS += -L$(DUMMY_ROOT)/lib
+	INCLUDES += -I$(DUMMY_ROOT)/include
+
+	PIGPIO_LIB = $(DUMMY_ROOT)/lib/libpigpio.so
 endif
 
 BUILD_MODE ?= debug
@@ -36,8 +38,12 @@ endif
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
-all: $(TARGET)
+all: $(PIGPIO_LIB) $(TARGET)
 	@printf $(BUILD_MSG)
+
+$(PIGPIO_LIB):
+	@printf "$(RED)[JCRT] Try to build the pigpio library!$(RESET)\n"
+	@bash $(GIT_ROOT)/scm/scripts/common/pigpio.sh
 
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $^ $(LIBS) -I$(INCLUDES)

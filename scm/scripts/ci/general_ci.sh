@@ -33,6 +33,7 @@ find . \
 	-type f \
 	-not -path './.git/*' -a \
 	-not -path "${BUILD_DIR}" -a \
+	-not -path "${DUMMY_DIR}" -a \
 	-not -path "${BACKEND_VIRTUAL_ENV_PATH}" \
 	! -name "${TAG_FILE}" \
 	! -name "${CSCOPE_FILE}" \
@@ -44,6 +45,7 @@ find . \
 	-type f \
 	-not -path './.git/*' -a \
 	-not -path "${BUILD_DIR}" -a \
+	-not -path "${DUMMY_DIR}" -a \
 	-not -path "${BACKEND_VIRTUAL_ENV_PATH}" \
 	! -name "${TAG_FILE}" \
 	! -name "${CSCOPE_FILE}" \

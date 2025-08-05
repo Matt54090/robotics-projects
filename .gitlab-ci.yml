@@ -1,6 +1,7 @@
 stages:
     - general
     - lang_check
+    - build
 
 General Test:
     stage: general
@@ -33,3 +34,11 @@ Python Test:
     script:
         - echo "This is the python CI check stage."
         - scm/scripts/ci/python_ci.sh
+
+Build:
+    stage: build
+    tags:
+        - jcrt-basic
+    script:
+        - echo "This is the C languages build stage."
+        - scm/scripts/ci/clang_build.sh

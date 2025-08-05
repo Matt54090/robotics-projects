@@ -15,6 +15,7 @@ RESULT=$(find . \
 	-not -path './.git/*' -a \
 	-not -path './gentags.sh' -a \
 	-not -path "${BUILD_DIR}" -a \
+	-not -path "${DUMMY_DIR}" -a \
 	-not -path "${BACKEND_VIRTUAL_ENV_PATH}" \
 	-name "*.sh")
 BASH_LISTS=$(echo "${RESULT}" | tr '\n' ' ')

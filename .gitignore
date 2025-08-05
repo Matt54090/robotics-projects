@@ -1,6 +1,7 @@
 .*.swp
 *.pyc
 *.o
+*.so
 
 /*.bin
 /out
@@ -11,6 +12,7 @@
 
 out/
 build/
+*/dummy
 
 test
 jcrt

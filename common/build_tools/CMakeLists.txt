@@ -33,6 +33,9 @@ else()
   set(GIT_DIR "../../")
 endif()
 
+set(DUMMY_DIR "${GIT_DIR}/common/dummy")
+set(PIGPIO_LIB "${DUMMY_DIR}/lib/libpigpio.so")
+
 # include the common source files
 include_directories("${GIT_DIR}/common/include")
 
@@ -44,16 +47,28 @@ add_executable(${PROJECT_NAME} ${JCRT_SRC})
 
 # set the target properties
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+    if(NOT EXISTS ${PIGPIO_LIB})
+    message(STATUS "[CMake] libpigpio.so not found, running setup script")
+    execute_process(
+      COMMAND bash ${GIT_DIR}/scm/scripts/common/pigpio.sh
+      RESULT_VARIABLE RETCODE
+    )
+
+    if(NOT RETCODE EQUAL 0)
+      message(FATAL_ERROR "setup_pigpio.sh failed")
+    endif()
+  endif()
+
   target_include_directories(
       ${PROJECT_NAME}
       PRIVATE
-      ${GIT_DIR}/common/dummy/include
+      ${DUMMY_DIR}/include
   )
 
   target_link_directories(
     ${PROJECT_NAME}
     PRIVATE
-    ${GIT_DIR}/common/dummy/lib
+    ${DUMMY_DIR}/lib
   )
 endif()
 
