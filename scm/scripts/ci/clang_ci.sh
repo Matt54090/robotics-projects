@@ -19,7 +19,7 @@ FILES=$(find . \
     \( -name "*.c" -o -name "*.h" \))
 for FILE in ${FILES}
 do
-    echo "checking ${FILE},,"
+    echo_func "[scm] checking ${FILE},," 0
     clang-format -i "${FILE}"
 done
 

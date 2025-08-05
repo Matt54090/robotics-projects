@@ -1,6 +1,7 @@
 stages:
     - general
     - lang_check
+    - static_analytics
     - build
 
 General Test:
@@ -34,6 +35,14 @@ Python Test:
     script:
         - echo "This is the python CI check stage."
         - scm/scripts/ci/python_ci.sh
+
+Static Analysis Test:
+    stage: static_analytics
+    tags:
+        - jcrt-basic
+    script:
+        - echo "This is the static analysis test stage."
+        - scm/scripts/ci/static_analytics.sh
 
 Build:
     stage: build

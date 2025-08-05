@@ -4,7 +4,7 @@
 check_result()
 {
     if [ ! -e "${RESULT}" ]; then
-        echo_func "[scm] Failed to get the target,," 1
+        echo_func "[SCM ERR] Failed to get the target,," 1
         exit 1
     fi
 
@@ -12,7 +12,7 @@ check_result()
     CHECK=$(grep -iE "(err|warn)" < "${RESULT}")
     rm "${RESULT}"
     if [ "${CHECK}" != "" ]; then
-        echo_func "[scm] occurred the issue error or warning when compile." 1
+        echo_func "[SCM ERR] occurred the issue error or warning when compile." 1
         exit 1
     fi
     set -e
@@ -20,7 +20,7 @@ check_result()
     if [ -f "${1}" ]; then
         echo_func "[scm] Successfully the compile." 0
     else
-        echo_func "[scm] Failed to get the target,," 1
+        echo_func "[SCM ERR] Failed to get the target,," 1
         exit 1
     fi
 }

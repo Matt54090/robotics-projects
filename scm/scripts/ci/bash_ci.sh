@@ -28,7 +28,7 @@ do
 	RET="$?"
 	if [[ "${RET}" != "0" ]]
 	then
-		echo_func "[SCM ERR] Need to check the ${SCRIPT} file"
+		echo_func "[SCM ERR] Need to check the ${SCRIPT} file" 1
 		exit 1
 	fi
 done

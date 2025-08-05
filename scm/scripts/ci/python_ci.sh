@@ -73,7 +73,7 @@ do
 	then
 		exit 1
 	fi
-	echo_func "[scm] Completed to check the \"flake8\""
+	echo_func "[scm] Completed to check the \"flake8\"" 0
 
 	lint_result=$(pylint "${py_file}" 2>&1 | \
 		grep "Your code" | \
@@ -85,7 +85,7 @@ do
 		pylint "${py_file}"
 		exit 1
 	fi
-	echo_func "[scm] Completed to check the \"pylint\""
+	echo_func "[scm] Completed to check the \"pylint\"" 0
 	echo
 done
 

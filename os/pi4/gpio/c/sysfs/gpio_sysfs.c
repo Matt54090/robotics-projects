@@ -102,10 +102,9 @@ static int _exit_gpio(struct gpio_sysfs *del)
 
     if (del->ctrl)
     {
-        struct gpio_ctrl *ctrl;
         for (int i = 0; i < (int)TOTAL_GPIO; i++)
         {
-            ctrl = &del->ctrl[i];
+            const struct gpio_ctrl *ctrl = &del->ctrl[i];
 
             if (ctrl->direction > 0)
                 _exit_gpio_direction(ctrl->direction);

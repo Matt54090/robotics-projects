@@ -16,5 +16,8 @@ bash ${CI_DIR}/bash_ci.sh
 bash ${CI_DIR}/clang_ci.sh
 bash ${CI_DIR}/python_ci.sh
 
+# static anaytics
+bash ${CI_DIR}/static_analytics.sh
+
 # build
 bash ${CI_DIR}/clang_build.sh
