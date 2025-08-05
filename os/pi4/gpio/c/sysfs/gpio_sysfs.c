@@ -103,7 +103,7 @@ static int _exit_gpio(struct gpio_sysfs *del)
     if (del->ctrl)
     {
         struct gpio_ctrl *ctrl;
-        for (int i = 0; i < TOTAL_GPIO; i++)
+        for (int i = 0; i < (int)TOTAL_GPIO; i++)
         {
             ctrl = &del->ctrl[i];
 
@@ -232,7 +232,8 @@ static int _exit_gpio_value(int fd)
 static int _set_gpio_output(struct gpio_sysfs *sysfs, int pin)
 {
     FORMULA_GUARD(sysfs == NULL, -EPERM, ERR_INVALID_PTR);
-    FORMULA_GUARD(pin < 0 || pin >= TOTAL_GPIO, -EPERM, "Invalid pin range.");
+    FORMULA_GUARD(pin < 0 || pin >= (int)TOTAL_GPIO, -EPERM,
+                  "Invalid pin range.");
 
     struct gpio_ctrl *ctrl = &sysfs->ctrl[pin];
     int real = sysfs->base + pin;
@@ -267,7 +268,8 @@ static int _set_gpio_output(struct gpio_sysfs *sysfs, int pin)
 static int _write_gpio(struct gpio_sysfs *sysfs, int pin, int value)
 {
     FORMULA_GUARD(sysfs == NULL, -EPERM, ERR_INVALID_PTR);
-    FORMULA_GUARD(pin < 0 || pin >= TOTAL_GPIO, -EPERM, "Invalid pin range.");
+    FORMULA_GUARD(pin < 0 || pin >= (int)TOTAL_GPIO, -EPERM,
+                  "Invalid pin range.");
 
     struct gpio_ctrl *ctrl = &sysfs->ctrl[pin];
     FORMULA_GUARD(ctrl->direction < 0 || ctrl->value < 0, -EPERM,

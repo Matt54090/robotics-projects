@@ -9,10 +9,21 @@ RED := \033[0;31m
 GREEN := \033[0;32m
 RESET := \033[0m
 
+GIT_ROOT = $(shell git rev-parse --show-toplevel)
+
+UNAME := $(shell uname -m)
+
 CC = gcc
 CFLAGS = -W -Wall -g -ggdb
-LIBS = -lpthread -lpigpio -lserialport
 TARGET = jcrt
+
+LIBS = -lpthread -lpigpio -lserialport
+INCLUDES = $(GIT_ROOT)/common/include
+
+ifeq ($(UNAME), x86_64)
+	LIBS += -L$(GIT_ROOT)/common/dummy/lib
+	INCLUDES += -I$(GIT_ROOT)/common/dummy/include
+endif
 
 BUILD_MODE ?= debug
 ifeq ($(BUILD_MODE), debug)
@@ -21,9 +32,6 @@ ifeq ($(BUILD_MODE), debug)
 else
 	BUILD_MSG := "$(GREEN)[JCRT] Complete to build w/ RELEASE mode.$(RESET)\n"
 endif
-
-GIT_ROOT = $(shell git rev-parse --show-toplevel)
-INCLUDES = $(GIT_ROOT)/common/include
 
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)

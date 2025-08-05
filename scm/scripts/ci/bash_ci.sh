@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
-export ENV SHELLCHECK_OPTS="--shell=bash --exclude=SC1091"
+export SHELLCHECK_OPTS="--shell=bash --exclude=SC1091"
 
 set -e
 

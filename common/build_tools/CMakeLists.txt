@@ -42,6 +42,21 @@ file(GLOB JCRT_SRC *.c)
 # make exe file
 add_executable(${PROJECT_NAME} ${JCRT_SRC})
 
+# set the target properties
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
+  target_include_directories(
+      ${PROJECT_NAME}
+      PRIVATE
+      ${GIT_DIR}/common/dummy/include
+  )
+
+  target_link_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    ${GIT_DIR}/common/dummy/lib
+  )
+endif()
+
 # set the compile option for the target
 set(COMFILE_OPTIONS -W -Wall -g -ggdb)
 if(CMAKE_BUILD_TYPE STREQUAL "debug")
