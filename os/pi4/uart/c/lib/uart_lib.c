@@ -12,10 +12,10 @@
 
 #include <jcrt/common.h>
 
-#define UART_DEV "/dev/serial0"
+#define UART_DEV "/dev/ttyAMA0"
 
 enum uart_info_e {
-    TIMEOUT = 0,
+    TIMEOUT = 1000,
 };
 
 struct uart_lib {
