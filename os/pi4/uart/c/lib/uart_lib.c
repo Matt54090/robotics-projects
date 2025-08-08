@@ -12,7 +12,7 @@
 
 #include <jcrt/common.h>
 
-#define UART_DEV "/dev/ttyAMA0"
+#define UART_DEV "/dev/ttyAMA2"
 
 enum uart_info_e {
     TIMEOUT = 1000,

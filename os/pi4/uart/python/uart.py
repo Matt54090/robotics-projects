@@ -21,7 +21,7 @@ import serial
 class Uart:
     """ Uart Class """
     def __init__(self, baudrate: int = 115200) -> None:
-        self.__serial = serial.Serial("/dev/ttyAMA0", baudrate=baudrate,
+        self.__serial = serial.Serial("/dev/ttyAMA2", baudrate=baudrate,
                                       timeout=1)
         if self.__serial.isOpen() is False:
             sys.exit(1)
