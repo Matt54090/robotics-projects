@@ -12,10 +12,6 @@
 
 #include <jcrt/common.h>
 
-enum {
-    BLOCK_SIZE = 4096,
-};
-
 struct gpio_mmio {
     int fd;
     volatile uint32_t *base;

@@ -14,10 +14,6 @@
 
 #define UART_DEV "/dev/ttyAMA2"
 
-enum uart_info_e {
-    TIMEOUT = 1000,
-};
-
 struct uart_lib {
     pthread_t tx;
     pthread_t rx;

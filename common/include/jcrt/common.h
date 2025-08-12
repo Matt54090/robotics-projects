@@ -75,7 +75,10 @@
 
 enum {
     OFF,
-    ON
+    ON,
+
+    TIMEOUT = 1000,
+    BLOCK_SIZE = 4096,
 };
 
 enum gpio_info_e {
@@ -83,9 +86,23 @@ enum gpio_info_e {
     GPIO_GPSET0 = 0x1c,
     GPIO_GPCLR0 = 0x28,
 
+    GPFSEL1 = 0x04,
+    GPPUPPDN0 = 0xe4,
+
     IO_PORT = 18,
 
     TOTAL_GPIO = 58
+};
+
+enum uart_info_e {
+    UART_BASE_ADDR = 0xfe201400, /* UART2 */
+    UART_DR = 0x00,
+    UART_FR = 0x18,
+    UART_IBRD = 0x24,
+    UART_FBRD = 0x28,
+    UART_LCRH = 0x2c,
+    UART_CR = 0x30,
+    UART_ICR = 0x44,
 };
 
 static inline int init_jcrt(void);
