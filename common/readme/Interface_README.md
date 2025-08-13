@@ -8,10 +8,11 @@ $ sudo apt install -y pigpio \
     libserialport-dev
 ```
 
-Check the pigpio daemon is running.
+Check the pigpio daemon is running. If daemon is live, need to stop the daemon service before running the application.
 
 ```
 $ sudo systemctl status pigpiod
+$ sudo systemctl stop pigpiod
 ```
 
 

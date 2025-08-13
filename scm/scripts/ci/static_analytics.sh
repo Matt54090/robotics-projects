@@ -33,10 +33,12 @@ source "${ROOT_DIR}/scm/scripts/common/echo.sh"
 PI_DIR="${ROOT_DIR}/os/pi4"
 GPIO_DIR="${PI_DIR}/gpio/c"
 UART_DIR="${PI_DIR}/uart/c"
+PWM_DIR="${PI_DIR}/pwm/c"
 
 TEST_DIRS=(
     "${GPIO_DIR}"
     "${UART_DIR}"
+    "${PWM_DIR}"
 )
 
 cd "${ROOT_DIR}" || exit 1
