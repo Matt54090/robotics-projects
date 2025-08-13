@@ -3,7 +3,15 @@
 Install the package below,
 
 ```
-$ sudo apt install -y pigpio libserialport-dev
+$ sudo apt install -y pigpio \
+    python3-pigpio \
+    libserialport-dev
+```
+
+Check the pigpio daemon is running.
+
+```
+$ sudo systemctl status pigpiod
 ```
 
 

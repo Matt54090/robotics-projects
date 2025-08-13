@@ -6,7 +6,16 @@ Install the packages below,
 $ sudo apt install python3-dev \
                     python3-setuptools \
                     python3-venv \
-                    python3-pip
+                    python3-pip \
+                    pigpio \
+                    python3-pigpio \
+```
+
+Check the pigpio deamon is running.
+
+```
+$ sudo systemctl status pigpiod
+$ sudo systemctl start pigpiod
 ```
 
 Setup the virtual environment.
