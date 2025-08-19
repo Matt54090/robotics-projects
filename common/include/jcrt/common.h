@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -105,6 +106,22 @@ enum uart_info_e {
     UART_ICR = 0x44,
 };
 
+enum pwm_info_e {
+    PWM_BASE_ADDR = 0xfe20c000, /* PWM0 */
+    PWM_CTL = 0x00,
+    PWM_STA = 0x04,
+    PWM_DMAC = 0x08,
+    PWM_RNG1 = 0x10,
+    PWM_DAT1 = 0x14,
+    PWM_FIF1 = 0x18,
+    PWM_RNG2 = 0x20,
+    PWM_DAT2 = 0x24,
+
+    CLK_BASE_ADDR = 0xfe101000, /* Clock */
+    CM_PWMCTL = 0xa0,
+    CM_PWMDIV = 0xa4,
+};
+
 static inline int init_jcrt(void);
 static inline void handler_for_ctrl_c(int signo);
 static inline int check_permission(void);
@@ -143,6 +160,40 @@ static inline int check_permission(void)
         return 0;
 
     return -EPERM;
+}
+
+static inline uint32_t _set_bits(uint32_t base, int set)
+{
+    return base |= set;
+}
+
+static inline uint32_t _clear_bits(uint32_t base, int clear)
+{
+    return base &= ~(clear);
+}
+
+static inline void _write_to_reg(volatile uint32_t *base, int offset, int value)
+{
+    base[offset >> 2] = value;
+}
+
+static inline uint32_t _read_from_reg(const volatile uint32_t *base, int offset)
+{
+    return base[offset >> 2];
+}
+
+static inline void _read_modify_write(volatile uint32_t *base, int offset,
+                                      uint32_t clear, uint32_t set)
+{
+    uint32_t value = _read_from_reg(base, offset);
+    value = _clear_bits(value, clear);
+    value = _set_bits(value, set);
+    _write_to_reg(base, offset, value);
+}
+
+static inline void _busy_wait(int us)
+{
+    usleep(us);
 }
 
 #endif /* COMMON_H */

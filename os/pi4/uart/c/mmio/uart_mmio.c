@@ -6,8 +6,6 @@
 
 #include <jcrt/common.h>
 
-#define WAIT_FOR_UART usleep(100)
-
 struct uart_mmio {
     int fd;
     size_t span;
@@ -25,16 +23,6 @@ static int _set_uart_config(volatile uint32_t *base);
 
 static void *_transmitter(void *arg);
 static void *_receiver(void *arg);
-
-static inline void _read_modify_write(volatile uint32_t *base, int offset,
-                                      uint32_t clear, uint32_t set);
-static inline uint32_t _set_bits(uint32_t base, int set);
-static inline uint32_t _clear_bits(uint32_t base, int clear);
-
-static inline void _write_to_reg(volatile uint32_t *base, int offset,
-                                 int value);
-static inline uint32_t _read_from_reg(const volatile uint32_t *base,
-                                      int offset);
 
 int main(void)
 {
@@ -121,7 +109,7 @@ static int _set_uart_config(volatile uint32_t *base)
 
     /* wait for the UART to be ready */
     while (_read_from_reg(base, UART_FR) & (0x1u << 3))
-        WAIT_FOR_UART;
+        _busy_wait(100);
 
     /* clear the interrupt */
     _write_to_reg(base, UART_ICR, 0x7ff);
@@ -183,7 +171,7 @@ static void *_transmitter(void *arg)
                     if (g_escape == ON)
                         return NULL;
 
-                    WAIT_FOR_UART;
+                    _busy_wait(100);
                 }
                 _write_to_reg(base, UART_DR, (uint8_t)buf[i]);
             }
@@ -221,38 +209,9 @@ static void *_receiver(void *arg)
         else
             buf[index++] = ret;
 
-        WAIT_FOR_UART;
+        _busy_wait(100);
     }
 
     DBG_MSG("Exiting receiver thread.");
     return NULL;
-}
-
-static inline void _read_modify_write(volatile uint32_t *base, int offset,
-                                      uint32_t clear, uint32_t set)
-{
-    uint32_t value = _read_from_reg(base, offset);
-    value = _clear_bits(value, clear);
-    value = _set_bits(value, set);
-    _write_to_reg(base, offset, value);
-}
-
-static inline uint32_t _set_bits(uint32_t base, int set)
-{
-    return base |= set;
-}
-
-static inline uint32_t _clear_bits(uint32_t base, int clear)
-{
-    return base &= ~(clear);
-}
-
-static inline void _write_to_reg(volatile uint32_t *base, int offset, int value)
-{
-    base[offset >> 2] = value;
-}
-
-static inline uint32_t _read_from_reg(const volatile uint32_t *base, int offset)
-{
-    return base[offset >> 2];
 }
