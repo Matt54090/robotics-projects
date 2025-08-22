@@ -122,18 +122,10 @@ static int _exit_pwm(struct pwm_mmio *del)
     _clear_gpio_config(del->gpio);
 
     if (del->clk)
-    {
-        /* clock disable */
-        _write_to_reg(del->clk, CM_PWMCTL, (0x5au << 24) | (0x1u << 5));
         munmap((void *)del->clk, del->page_size);
-    }
 
     if (del->base)
-    {
-        /* PWM off */
-        _write_to_reg(del->base, PWM_CTL, 0x0);
         munmap((void *)del->base, del->page_size);
-    }
 
     if (del->gpio)
         munmap((void *)del->gpio, del->page_size);
