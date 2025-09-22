@@ -11,7 +11,8 @@ $ sudo apt install python3-dev \
                     python3-pigpio \
                     python3-smbus \
                     i2c-tools \
-                    python3-matplotlib
+                    python3-matplotlib \
+                    python3-spidev
 ```
 
 Check the pigpio deamon is running for PWM
@@ -24,7 +25,17 @@ $ sudo systemctl start pigpiod
 for enabing the I2C bus
 ```
 $ sudo raspi-config → Interface Options → I2C Enable
+$ dmesg | grep -i i2c
+$ ls -al /dev/i2c*
 ````
+
+for enabling the SPI bus
+
+```
+$ sudo raspi-config → Interface Options → SPI Enable
+$ dmesg | grep -i spi
+$ ls -al /dev/spi*
+```
 
 Setup the virtual environment.
 
