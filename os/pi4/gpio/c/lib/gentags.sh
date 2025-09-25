@@ -1,0 +1,1 @@
+../../../../../scm/scripts/common/gentags_lsp_for_c.sh

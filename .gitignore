@@ -13,6 +13,8 @@
 out/
 build/
 */dummy
+.cache/
+compile_commands.json
 
 test
 jcrt
