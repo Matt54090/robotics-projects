@@ -24,3 +24,8 @@ class GpioMode(IntEnum):
 
     DIR_LEFT_MOTOR = 5
     DIR_RIGHT_MOTOR = 6
+
+    I2C_BUS = 1
+    SPI_BUS = 0
+    SPI_DEVICE = 0
+    SPI_MAX_SPEED_HZ = 1_000_000

@@ -16,8 +16,10 @@ from pirc522 import RFID  # pylint: disable=import-error
 class Rfid:
     """RFID class"""
 
-    def __init__(self, pin_rst: int, pin_irq: int) -> None:
-        self.__rfid = RFID(pin_rst=pin_rst, pin_irq=pin_irq)
+    def __init__(self, bus: int, device: int, speed: int) -> None:
+        self.__rfid = RFID(
+            bus=bus, device=device, speed=speed, pin_rst=None, pin_irq=None
+        )
         self.__util = self.__rfid.util()
 
     def __del__(self) -> None:

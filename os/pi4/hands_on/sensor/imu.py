@@ -36,7 +36,7 @@ class Imu:
     ACCEL_SCALE = 16384.0  # when ±2g, LSB/g
     GYRO_SCALE = 131.0  # when ±250dps, LSB/(deg/s)
 
-    def __init__(self, bus: int = 1) -> None:
+    def __init__(self, bus: int) -> None:
         # get the i2c bus
         self.__bus = SMBus(bus)
 

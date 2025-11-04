@@ -51,3 +51,15 @@ class Led:
     def set_green(self) -> None:
         """Set LED to Green"""
         GPIO.output(self.__green_pin, GPIO.HIGH)
+
+    def clear_red(self) -> None:
+        """Clear Red LED"""
+        GPIO.output(self.__red_pin, GPIO.LOW)
+
+    def clear_yellow(self) -> None:
+        """Clear Yellow LED"""
+        GPIO.output(self.__yello_pin, GPIO.LOW)
+
+    def clear_green(self) -> None:
+        """Clear Green LED"""
+        GPIO.output(self.__green_pin, GPIO.LOW)
