@@ -30,13 +30,14 @@ class Led:
         GPIO.output(self.__green_pin, GPIO.LOW)
 
     def __del__(self) -> None:
-        GPIO.output(self.__green_pin, GPIO.LOW)
-        GPIO.output(self.__yello_pin, GPIO.LOW)
-        GPIO.output(self.__red_pin, GPIO.LOW)
-
-        GPIO.setup(self.__green_pin, GPIO.IN)
-        GPIO.setup(self.__yello_pin, GPIO.IN)
-        GPIO.setup(self.__red_pin, GPIO.IN)
+        for attr in ("_Led__green_pin", "_Led__yello_pin", "_Led__red_pin"):
+            if hasattr(self, attr):
+                try:
+                    pin = getattr(self, attr)
+                    GPIO.output(pin, GPIO.LOW)
+                    GPIO.setup(pin, GPIO.IN)
+                except RuntimeError:
+                    pass
 
     ###########################################################################
     # Public methods

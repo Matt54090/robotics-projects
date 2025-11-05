@@ -26,12 +26,19 @@ class Robot:
     """Autonomous obstacle-avoiding robot with LED + IMU logging"""
 
     def __init__(self) -> None:
-        GPIO.setmode(GPIO.BCM)
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
 
+        self.__rfid = Rfid(
+            GpioMode.SPI_BUS, GpioMode.SPI_DEVICE, GpioMode.SPI_MAX_SPEED_HZ
+        )
+
+        # in RFID packages, setmode called multiple times,
+        # so we need to reset here
+        GPIO.cleanup()
+        GPIO.setmode(GPIO.BCM)
+
         # Private devices
-        self.__rfid = Rfid(GpioMode.SPI_BUS, GpioMode.SPI_DEVICE,
-                           GpioMode.SPI_MAX_SPEED_HZ)
         self.__infrared = Infrared(GpioMode.SEN_INFRARED)
         self.__led = Led(
             GpioMode.LED_RED, GpioMode.LED_YELLOW, GpioMode.LED_GREEN
@@ -74,7 +81,11 @@ class Robot:
             detected, uid = self.__rfid.get_uid()
             if detected:
                 print(f"[JCRT] RFID detected: UID={uid}")
+                self.__led.set_red()
                 self.__led.set_green()
+                self.__led.set_yellow()
+
+                time.sleep(2.0)
                 self.__led.clear_yellow()
                 self.__running = True
                 break
@@ -91,7 +102,7 @@ class Robot:
         while self.__running:
             if not self.__infrared.is_obstacle_detected():
                 self.__led.set_green()
-                self.__motor.move_forward(50)
+                self.__motor.move_forward(60)
                 self.__log_imu()
             else:
                 self.__handle_obstacle()
@@ -103,11 +114,10 @@ class Robot:
         self.__motor.stop_all()
         self.__led.clear_green()
         self.__led.set_red()
-        time.sleep(0.5)
 
-        # Blink yellow for 2 seconds (status: analyzing)
+        # Blink yellow for 0.5 seconds
         print("[JCRT] Pausing... blinking yellow")
-        end_time = time.time() + 2.0
+        end_time = time.time() + 0.5
         while time.time() < end_time:
             self.__led.set_yellow()
             time.sleep(0.2)
@@ -115,17 +125,14 @@ class Robot:
             time.sleep(0.2)
 
         # Random turn
-        action = random.choice(["left", "right", "back"])
+        action = random.choice(["left", "right"])
         print(f"[JCRT] Avoiding → {action}")
         if action == "left":
-            self.__motor.move_backward(40)
+            self.__motor.turn_left()
             time.sleep(0.4)
         elif action == "right":
-            self.__motor.move_forward(40)
+            self.__motor.turn_right()
             time.sleep(0.4)
-        else:
-            self.__motor.move_backward(60)
-            time.sleep(0.8)
 
         self.__motor.stop_all()
         self.__led.clear_red()

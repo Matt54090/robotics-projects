@@ -48,7 +48,11 @@ class Imu:
         )
 
     def __del__(self) -> None:
-        self.__bus.close()
+        if hasattr(self, "_Imu__bus"):
+            try:
+                self.__bus.close()
+            except AttributeError:
+                pass
 
     ###########################################################################
     # Public methods

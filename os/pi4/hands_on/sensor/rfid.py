@@ -10,6 +10,8 @@ See the LICENSE file in the project root for more details.
 
 from pirc522 import RFID  # pylint: disable=import-error
 
+from common.gpio_mode import GpioMode
+
 
 ###############################################################################
 #  Rfid class
@@ -18,12 +20,20 @@ class Rfid:
 
     def __init__(self, bus: int, device: int, speed: int) -> None:
         self.__rfid = RFID(
-            bus=bus, device=device, speed=speed, pin_rst=None, pin_irq=None
+            bus=bus,
+            device=device,
+            speed=speed,
+            pin_rst=GpioMode.DUMMY_RFID_RST,
+            pin_irq=None,
         )
         self.__util = self.__rfid.util()
 
     def __del__(self) -> None:
-        self.__rfid.cleanup()
+        if hasattr(self, "_Rfid__rfid"):
+            try:
+                self.__rfid.cleanup()
+            except AttributeError:
+                pass
 
     ###########################################################################
     # Public methods

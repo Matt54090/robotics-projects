@@ -13,6 +13,7 @@ from enum import IntEnum
 
 class GpioMode(IntEnum):
     """GPIO Modes Enumeration"""
+
     SEN_INFRARED = 17
 
     LED_RED = 18
@@ -29,3 +30,5 @@ class GpioMode(IntEnum):
     SPI_BUS = 0
     SPI_DEVICE = 0
     SPI_MAX_SPEED_HZ = 1_000_000
+
+    DUMMY_RFID_RST = 22

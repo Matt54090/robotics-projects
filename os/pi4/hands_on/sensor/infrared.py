@@ -21,7 +21,11 @@ class Infrared:
         GPIO.setup(self.__pin, GPIO.IN)
 
     def __del__(self) -> None:
-        GPIO.setup(self.__pin, GPIO.IN)
+        if hasattr(self, "_Infrared__pin"):
+            try:
+                GPIO.setup(self.__pin, GPIO.IN)
+            except RuntimeError:
+                pass
 
     ###########################################################################
     # Public methods

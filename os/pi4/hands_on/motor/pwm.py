@@ -16,8 +16,13 @@ from RPi import GPIO  # pylint: disable=import-error
 class Pwm:
     """Pwm Class"""
 
-    def __init__(self, left_dir_pin: int, left_motor_pin: int,
-                 right_dir_pin: int, right_motor_pin: int) -> None:
+    def __init__(
+        self,
+        left_dir_pin: int,
+        left_motor_pin: int,
+        right_dir_pin: int,
+        right_motor_pin: int,
+    ) -> None:
         self.__left_dir = left_dir_pin
         self.__left_motor = left_motor_pin
         self.__right_dir = right_dir_pin
@@ -38,37 +43,59 @@ class Pwm:
         self.__pwm_r.start(100)
 
     def __del__(self) -> None:
-        self.stop_all()
+        cls_prefix = f"_{self.__class__.__name__}__"
+        pwm_attrs = [cls_prefix + "pwm_l", cls_prefix + "pwm_r"]
+        gpio_attrs = [
+            cls_prefix + "left_dir",
+            cls_prefix + "left_motor",
+            cls_prefix + "right_dir",
+            cls_prefix + "right_motor",
+        ]
 
-        self.__pwm_r.stop()
-        self.__pwm_l.stop()
-        del self.__pwm_r, self.__pwm_l
+        for attr in pwm_attrs:
+            if hasattr(self, attr):
+                pwm = getattr(self, attr)
+                try:
+                    pwm.ChangeDutyCycle(0)
+                    pwm.stop()
+                except (RuntimeError, ValueError):
+                    pass
 
-        GPIO.output(self.__right_dir, GPIO.LOW)
-        GPIO.output(self.__left_dir, GPIO.HIGH)
-
-        GPIO.setup(self.__right_motor, GPIO.IN)
-        GPIO.setup(self.__right_dir, GPIO.IN)
-        GPIO.setup(self.__left_motor, GPIO.IN)
-        GPIO.setup(self.__left_dir, GPIO.IN)
+        for attr in gpio_attrs:
+            if hasattr(self, attr):
+                try:
+                    pin = getattr(self, attr)
+                    GPIO.output(pin, GPIO.LOW)
+                    GPIO.setup(pin, GPIO.IN)
+                except RuntimeError:
+                    pass
 
     ###########################################################################
     # Public methods
     def stop_all(self) -> None:
         """Stop all motors"""
+        GPIO.output(self.__left_dir, GPIO.HIGH)
+        GPIO.output(self.__right_dir, GPIO.LOW)
         self.__pwm_l.ChangeDutyCycle(0)
-        self.__pwm_r.ChangeDutyCycle(0)
+        self.__pwm_r.ChangeDutyCycle(100)
 
-    def move_forward(self, speed: int = 10) -> None:
+    def move_forward(self, speed: int = 50) -> None:
         """Move forward"""
         GPIO.output(self.__left_dir, GPIO.HIGH)
         GPIO.output(self.__right_dir, GPIO.LOW)
         self.__pwm_l.ChangeDutyCycle(speed)
         self.__pwm_r.ChangeDutyCycle(100 - speed)
 
-    def move_backward(self, speed: int = 60) -> None:
-        """Move backward"""
-        GPIO.output(self.__left_dir, GPIO.LOW)
-        GPIO.output(self.__right_dir, GPIO.HIGH)
-        self.__pwm_l.ChangeDutyCycle(100 - speed)
-        self.__pwm_r.ChangeDutyCycle(speed)
+    def turn_left(self, speed: int = 50) -> None:
+        """Turn left"""
+        GPIO.output(self.__left_dir, GPIO.HIGH)
+        GPIO.output(self.__right_dir, GPIO.LOW)
+        self.__pwm_l.ChangeDutyCycle(0)
+        self.__pwm_r.ChangeDutyCycle(100 - speed)
+
+    def turn_right(self, speed: int = 50) -> None:
+        """Turn right"""
+        GPIO.output(self.__left_dir, GPIO.HIGH)
+        GPIO.output(self.__right_dir, GPIO.LOW)
+        self.__pwm_l.ChangeDutyCycle(speed)
+        self.__pwm_r.ChangeDutyCycle(100)
