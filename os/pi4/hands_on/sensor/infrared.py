@@ -31,4 +31,4 @@ class Infrared:
     # Public methods
     def is_obstacle_detected(self) -> bool:
         """Check if an obstacle is detected"""
-        return GPIO.input(self.__pin) == 0  # LOW = 장애물 감지
+        return GPIO.input(self.__pin) == 0

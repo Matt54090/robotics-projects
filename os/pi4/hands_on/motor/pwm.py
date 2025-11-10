@@ -8,6 +8,8 @@ Copyright (c) 2025 Junior Coder Rescue Team
 See the LICENSE file in the project root for more details.
 """
 
+import time
+
 from RPi import GPIO  # pylint: disable=import-error
 
 
@@ -86,16 +88,20 @@ class Pwm:
         self.__pwm_l.ChangeDutyCycle(speed)
         self.__pwm_r.ChangeDutyCycle(100 - speed)
 
-    def turn_left(self, speed: int = 50) -> None:
+    def turn_left(self, speed: int = 50, interval: float = 1.0) -> None:
         """Turn left"""
         GPIO.output(self.__left_dir, GPIO.HIGH)
         GPIO.output(self.__right_dir, GPIO.LOW)
         self.__pwm_l.ChangeDutyCycle(0)
         self.__pwm_r.ChangeDutyCycle(100 - speed)
+        time.sleep(interval)
+        self.stop_all()
 
-    def turn_right(self, speed: int = 50) -> None:
+    def turn_right(self, speed: int = 50, interval: float = 1.0) -> None:
         """Turn right"""
         GPIO.output(self.__left_dir, GPIO.HIGH)
         GPIO.output(self.__right_dir, GPIO.LOW)
         self.__pwm_l.ChangeDutyCycle(speed)
         self.__pwm_r.ChangeDutyCycle(100)
+        time.sleep(interval)
+        self.stop_all()

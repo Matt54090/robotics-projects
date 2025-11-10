@@ -13,6 +13,7 @@ import time
 
 from RPi import GPIO  # pylint: disable=import-error
 
+from common.delay import Delay
 from common.gpio_mode import GpioMode
 from motor.pwm import Pwm
 from sensor.imu import Imu
@@ -22,6 +23,7 @@ from sensor.rfid import Rfid
 
 
 ###############################################################################
+# Robot class
 class Robot:
     """Autonomous obstacle-avoiding robot with LED + IMU logging"""
 
@@ -52,10 +54,10 @@ class Robot:
         self.__imu = Imu(GpioMode.I2C_BUS)
 
         self.__running = False
-        self.__loop_interval = 0.1
 
     def __del__(self) -> None:
-        self.stop()
+        if hasattr(self, "_Robot__motor") and hasattr(self, "_Robot__running"):
+            self.stop()
         GPIO.cleanup()
 
     ###########################################################################
@@ -64,7 +66,6 @@ class Robot:
         """Robot main entry"""
         print("[JCRT] Start robot!")
         self.__wait_for_start()
-        self.__main_loop()
 
     def stop(self) -> None:
         """Stop and cleanup"""
@@ -79,34 +80,34 @@ class Robot:
         print("[JCRT] Waiting for RFID card...")
         while True:
             detected, uid = self.__rfid.get_uid()
-            if detected:
+            if detected is True:
                 print(f"[JCRT] RFID detected: UID={uid}")
-                self.__led.set_red()
-                self.__led.set_green()
-                self.__led.set_yellow()
-
-                time.sleep(2.0)
-                self.__led.clear_yellow()
+                self.__led.on_and_off(Delay.RFID_DETECT.value)
                 self.__running = True
-                break
+                self.__main_loop()
 
             # Blink yellow LED while waiting
-            self.__led.set_yellow()
-            time.sleep(0.5)
-            self.__led.clear_yellow()
-            time.sleep(0.5)
+            self.__led.blink_yellow(Delay.WAIT_FOR_START.value)
 
     def __main_loop(self) -> None:
         """Main motion + IMU logging loop"""
         print("[JCRT] Robot moving...")
-        while self.__running:
+        while self.__running is True:
+            detected, _ = self.__rfid.get_uid()
+            if detected:
+                print("[JCRT] RFID detected again → Back to wait for start!")
+                self.__motor.stop_all()
+                self.__running = False
+                self.__led.on_and_off(Delay.RFID_DETECT.value)
+                return
+
             if not self.__infrared.is_obstacle_detected():
                 self.__led.set_green()
                 self.__motor.move_forward(60)
                 self.__log_imu()
             else:
                 self.__handle_obstacle()
-            time.sleep(self.__loop_interval)
+            time.sleep(Delay.MAIN_LOOP.value)
 
     def __handle_obstacle(self) -> None:
         """Obstacle detected sequence"""
@@ -119,25 +120,18 @@ class Robot:
         print("[JCRT] Pausing... blinking yellow")
         end_time = time.time() + 0.5
         while time.time() < end_time:
-            self.__led.set_yellow()
-            time.sleep(0.2)
-            self.__led.clear_yellow()
-            time.sleep(0.2)
+            self.__led.blink_yellow(Delay.CHECK_OBSTACLE.value)
 
         # Random turn
         action = random.choice(["left", "right"])
         print(f"[JCRT] Avoiding → {action}")
         if action == "left":
-            self.__motor.turn_left()
-            time.sleep(0.4)
+            self.__motor.turn_left(interval=Delay.OBSTACLE_LOOP.value)
         elif action == "right":
-            self.__motor.turn_right()
-            time.sleep(0.4)
+            self.__motor.turn_right(interval=Delay.OBSTACLE_LOOP.value)
 
-        self.__motor.stop_all()
-        self.__led.clear_red()
-        self.__led.clear_yellow()
-        time.sleep(0.3)
+        self.__led.clear_all()
+        time.sleep(Delay.CHECK_OBSTACLE.value)
 
     def __log_imu(self) -> None:
         """Log accelerometer and gyro data"""

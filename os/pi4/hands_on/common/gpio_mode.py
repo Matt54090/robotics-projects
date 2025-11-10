@@ -11,6 +11,8 @@ See the LICENSE file in the project root for more details.
 from enum import IntEnum
 
 
+###############################################################################
+# GpioMode Enum class
 class GpioMode(IntEnum):
     """GPIO Modes Enumeration"""
 

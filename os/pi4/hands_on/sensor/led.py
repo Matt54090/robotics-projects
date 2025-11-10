@@ -8,6 +8,8 @@ Copyright (c) 2025 Junior Coder Rescue Team
 See the LICENSE file in the project root for more details.
 """
 
+import time
+
 from RPi import GPIO  # pylint: disable=import-error
 
 
@@ -64,3 +66,27 @@ class Led:
     def clear_green(self) -> None:
         """Clear Green LED"""
         GPIO.output(self.__green_pin, GPIO.LOW)
+
+    def clear_all(self) -> None:
+        """Clear All LEDs"""
+        self.clear_red()
+        self.clear_yellow()
+        self.clear_green()
+
+    def blink_yellow(self, interval: float) -> None:
+        """Blink Yellow LED"""
+        self.set_yellow()
+        time.sleep(interval)
+        self.clear_yellow()
+        time.sleep(interval)
+
+    def on_and_off(self, interval: float) -> None:
+        """Blink All LEDs"""
+        self.set_red()
+        self.set_yellow()
+        self.set_green()
+        time.sleep(interval)
+
+        self.clear_red()
+        self.clear_yellow()
+        self.clear_green()
