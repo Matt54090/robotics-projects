@@ -20,6 +20,16 @@ source "${COMMON_DIR}/echo.sh"
 cd "${ROOT_DIR}"
 pwd
 
+diff_check()
+{
+	RET="$?"
+	if [ "${RET}" -ne "0" ]
+	then
+		exit 1
+	fi
+	echo_func "[scm] Completed to check the \"${1}\"" 0
+}
+
 # if exist virtual envrionment for JCRT, remove it
 if [[ -d "${VENV}" ]]
 then
@@ -63,24 +73,12 @@ do
 
 	# sort the import
 	python3 -m isort "${py_file}"
-	echo_func "[scm] Completed to check the \"isort\"" 0
-
 	"${COMMON_DIR}/diff_check.sh"
-	RET="$?"
-	if [ "${RET}" -ne "0" ]
-	then
-		exit 1
-	fi
+    diff_check "isort"
 
 	# coding style check
 	python3 -m flake8 "${py_file}"
-
-	RET="$?"
-	if [ "${RET}" -ne "0" ]
-	then
-		exit 1
-	fi
-	echo_func "[scm] Completed to check the \"flake8\"" 0
+    diff_check "flake8"
 
 	lint_result=$(pylint "${py_file}" 2>&1 | \
 		grep "Your code" | \
@@ -93,6 +91,9 @@ do
 		exit 1
 	fi
 	echo_func "[scm] Completed to check the \"pylint\"" 0
+
+    black -l 79 --check "${py_file}"
+    diff_check "black"
 	echo
 done
 

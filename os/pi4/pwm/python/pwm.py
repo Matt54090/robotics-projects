@@ -24,8 +24,8 @@ if not pi.connected:
 pi.set_mode(IO_PORT, pigpio.ALT5)
 
 # set the PWM configuration
-FREQ = 1000      # Hz
-DUTY = 500000    # 50% (range: 0 ~ 1,000,000)
+FREQ = 1000  # Hz
+DUTY = 500000  # 50% (range: 0 ~ 1,000,000)
 pi.hardware_PWM(IO_PORT, FREQ, DUTY)
 print(f"[JCRT] Start the PWM on GPIO{IO_PORT} port!")
 

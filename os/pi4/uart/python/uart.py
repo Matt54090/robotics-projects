@@ -19,10 +19,12 @@ import serial
 
 
 class Uart:
-    """ Uart Class """
+    """Uart Class"""
+
     def __init__(self, baudrate: int = 115200) -> None:
-        self.__serial = serial.Serial("/dev/ttyAMA2", baudrate=baudrate,
-                                      timeout=1)
+        self.__serial = serial.Serial(
+            "/dev/ttyAMA2", baudrate=baudrate, timeout=1
+        )
         if self.__serial.isOpen() is False:
             sys.exit(1)
 
@@ -49,12 +51,12 @@ class Uart:
     # Public methods
     @property
     def escape(self) -> bool:
-        """ Getter for escape """
+        """Getter for escape"""
         return self.__escape
 
     @escape.setter
     def escape(self, value: bool) -> None:
-        """ Setter for escape """
+        """Setter for escape"""
         self.__escape = value
 
     ###########################################################################
@@ -62,7 +64,7 @@ class Uart:
     def __transmitter(self) -> None:
         while self.__escape is False:
             data = input("[JCRT] Enter the data: ")
-            self.__serial.write((data + '\n').encode('utf-8'))
+            self.__serial.write((data + "\n").encode("utf-8"))
             print("[JCRT] Data Transmitted: ")
 
             time.sleep(1)
@@ -70,7 +72,7 @@ class Uart:
     def __receiver(self) -> None:
         while self.__escape is False:
             if self.__serial.in_waiting > 0:
-                data = self.__serial.readline().decode('utf-8').strip()
+                data = self.__serial.readline().decode("utf-8").strip()
                 print(f"[JCRT] Data Received: {data}")
 
             time.sleep(1)
