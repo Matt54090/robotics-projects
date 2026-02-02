@@ -1,3 +1,4 @@
+RPi.GPIO
 pygpio
 pyserial
 smbus2

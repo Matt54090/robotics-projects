@@ -7,6 +7,7 @@ $ sudo apt install python3-dev \
                     python3-setuptools \
                     python3-venv \
                     python3-pip \
+                    python3-rpi.gpio \
                     pigpio \
                     python3-pigpio \
                     python3-smbus \
@@ -40,7 +41,7 @@ $ ls -al /dev/spi*
 Setup the virtual environment.
 
 ```
-$ python3 -m venv .env
+$ python3 -m venv .env --system-site-packages
 $ source .env/bin/activate
 (.env) $ pip install -U pip
 (.env) $ pip install -r <root_dir>/common/build_tools/requirements.txt
