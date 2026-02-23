@@ -8,6 +8,7 @@ Copyright (c) 2025 Junior Coder Rescue Team
 See the LICENSE file in the project root for more details.
 """
 
+import time
 from enum import Enum
 
 from smbus2 import SMBus  # pylint: disable=import-error
@@ -103,3 +104,23 @@ class Imu:
             value -= 65536
 
         return value
+
+
+if __name__ == "__main__":
+    imu = Imu(1)
+
+    try:
+        while True:
+            acc = imu.read_accel_value()
+            gyro = imu.read_gyro_value()
+
+            print(
+                f"Acc: X={acc[0]:.2f}, Y={acc[1]:.2f}, Z={acc[2]:.2f} |"
+                f"Gyro: X={gyro[0]:.2f}, Y={gyro[1]:.2f}, Z={gyro[2]:.2f}"
+            )
+
+            time.sleep(0.2)
+
+        print("[JCRT] imu test done!")
+    except KeyboardInterrupt:
+        print("[JCRT] imu exit!")

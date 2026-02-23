@@ -87,6 +87,17 @@ class Led:
         self.set_green()
         time.sleep(interval)
 
-        self.clear_red()
-        self.clear_yellow()
-        self.clear_green()
+        self.clear_all()
+
+
+if __name__ == "__main__":
+    GPIO.setmode(GPIO.BCM)
+
+    led = Led(red_pin=18, yello_pin=27, green_pin=22)
+
+    try:
+        led.on_and_off(1)
+        led.blink_yellow(1)
+        print("[JCRT] led test done!")
+    except KeyboardInterrupt:
+        print("[JCRT] led test exit!")

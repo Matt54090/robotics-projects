@@ -35,8 +35,8 @@ class Pwm:
         GPIO.setup(self.__right_dir, GPIO.OUT)
         GPIO.setup(self.__right_motor, GPIO.OUT)
 
-        GPIO.output(self.__left_dir, GPIO.HIGH)
-        GPIO.output(self.__right_dir, GPIO.LOW)
+        GPIO.output(self.__left_dir, GPIO.LOW)
+        GPIO.output(self.__right_dir, GPIO.HIGH)
 
         self.__pwm_l = GPIO.PWM(self.__left_motor, 1000)
         self.__pwm_r = GPIO.PWM(self.__right_motor, 1000)
@@ -56,10 +56,10 @@ class Pwm:
 
         for attr in pwm_attrs:
             if hasattr(self, attr):
-                pwm = getattr(self, attr)
+                pwm_attr = getattr(self, attr)
                 try:
-                    pwm.ChangeDutyCycle(0)
-                    pwm.stop()
+                    pwm_attr.ChangeDutyCycle(0)
+                    pwm_attr.stop()
                 except (RuntimeError, ValueError):
                     pass
 
@@ -76,32 +76,52 @@ class Pwm:
     # Public methods
     def stop_all(self) -> None:
         """Stop all motors"""
-        GPIO.output(self.__left_dir, GPIO.HIGH)
-        GPIO.output(self.__right_dir, GPIO.LOW)
+        GPIO.output(self.__left_dir, GPIO.LOW)
+        GPIO.output(self.__right_dir, GPIO.HIGH)
         self.__pwm_l.ChangeDutyCycle(0)
         self.__pwm_r.ChangeDutyCycle(100)
 
     def move_forward(self, speed: int = 50) -> None:
         """Move forward"""
-        GPIO.output(self.__left_dir, GPIO.HIGH)
-        GPIO.output(self.__right_dir, GPIO.LOW)
+        GPIO.output(self.__left_dir, GPIO.LOW)
+        GPIO.output(self.__right_dir, GPIO.HIGH)
         self.__pwm_l.ChangeDutyCycle(speed)
         self.__pwm_r.ChangeDutyCycle(100 - speed)
 
     def turn_left(self, speed: int = 50, interval: float = 1.0) -> None:
         """Turn left"""
         GPIO.output(self.__left_dir, GPIO.HIGH)
-        GPIO.output(self.__right_dir, GPIO.LOW)
-        self.__pwm_l.ChangeDutyCycle(0)
+        GPIO.output(self.__right_dir, GPIO.HIGH)
+        self.__pwm_l.ChangeDutyCycle(100 - speed)
         self.__pwm_r.ChangeDutyCycle(100 - speed)
         time.sleep(interval)
         self.stop_all()
 
     def turn_right(self, speed: int = 50, interval: float = 1.0) -> None:
         """Turn right"""
-        GPIO.output(self.__left_dir, GPIO.HIGH)
+        GPIO.output(self.__left_dir, GPIO.LOW)
         GPIO.output(self.__right_dir, GPIO.LOW)
         self.__pwm_l.ChangeDutyCycle(speed)
-        self.__pwm_r.ChangeDutyCycle(100)
+        self.__pwm_r.ChangeDutyCycle(speed)
         time.sleep(interval)
         self.stop_all()
+
+
+if __name__ == "__main__":
+    GPIO.setmode(GPIO.BCM)
+    try:
+        pwm = Pwm(5, 12, 6, 13)
+        pwm.move_forward(75)
+        time.sleep(2)
+
+        pwm.turn_left(speed=60, interval=1.0)
+        time.sleep(2)
+
+        pwm.turn_right(speed=60, interval=1.0)
+        time.sleep(2)
+
+        print("[JCRT] pwm test done!")
+    except KeyboardInterrupt:
+        print("[JCRT] pwm exit!")
+    finally:
+        GPIO.cleanup()

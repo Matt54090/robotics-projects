@@ -126,9 +126,13 @@ class Robot:
         action = random.choice(["left", "right"])
         print(f"[JCRT] Avoiding → {action}")
         if action == "left":
-            self.__motor.turn_left(interval=Delay.OBSTACLE_LOOP.value)
+            self.__motor.turn_left(
+                speed=60, interval=Delay.OBSTACLE_LOOP.value
+            )
         elif action == "right":
-            self.__motor.turn_right(interval=Delay.OBSTACLE_LOOP.value)
+            self.__motor.turn_right(
+                speed=60, interval=Delay.OBSTACLE_LOOP.value
+            )
 
         self.__led.clear_all()
         time.sleep(Delay.CHECK_OBSTACLE.value)

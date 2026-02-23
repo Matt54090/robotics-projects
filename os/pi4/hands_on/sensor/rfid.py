@@ -8,6 +8,8 @@ Copyright (c) 2025 Junior Coder Rescue Team
 See the LICENSE file in the project root for more details.
 """
 
+import time
+
 from pirc522 import RFID  # pylint: disable=import-error
 
 from common.gpio_mode import GpioMode
@@ -49,3 +51,21 @@ class Rfid:
 
         self.__util.deauth()
         return (True, uid)
+
+
+if __name__ == "__main__":
+    try:
+        rfid = Rfid(
+            GpioMode.SPI_BUS, GpioMode.SPI_DEVICE, GpioMode.SPI_MAX_SPEED_HZ
+        )
+        while True:
+            (success, rfid_uid) = rfid.get_uid()
+            if success:
+                print(f"UID: {rfid_uid}")
+
+            time.sleep(1)
+
+        print("[JCRT] rfid test done!")
+
+    except KeyboardInterrupt:
+        print("[JCRT] rfid exit!")

@@ -8,6 +8,8 @@ Copyright (c) 2025 Junior Coder Rescue Team
 See the LICENSE file in the project root for more details.
 """
 
+import time
+
 from RPi import GPIO  # pylint: disable=import-error
 
 
@@ -32,3 +34,23 @@ class Infrared:
     def is_obstacle_detected(self) -> bool:
         """Check if an obstacle is detected"""
         return GPIO.input(self.__pin) == 0
+
+
+if __name__ == "__main__":
+    GPIO.setmode(GPIO.BCM)
+    infrared = Infrared(17)
+
+    try:
+        while True:
+            if infrared.is_obstacle_detected():
+                print("Obstacle detected!")
+            else:
+                print("No obstacle detected.")
+
+            time.sleep(1)
+
+        print("[JCRT] infrared test done!")
+    except KeyboardInterrupt:
+        print("[JCRT] infrared exit!")
+    finally:
+        GPIO.cleanup()
