@@ -31,5 +31,6 @@ $ sudo systemctl stop jcrt_mini_project.service
 # Check the Daemon Log
 
 ```
-$ journalctl -u jcrt_mini_project.service -f
+$ ps -elf | grep main
+$ sudo journalctl -f | grep <PID> --color
 ```
