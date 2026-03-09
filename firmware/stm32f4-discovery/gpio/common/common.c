@@ -1,0 +1,8 @@
+#include "common.h"
+
+#include "stm32f4xx_hal.h"
+
+void delay_ms(uint32_t ms)
+{
+    HAL_Delay(ms);
+}
