@@ -1,7 +1,16 @@
+/*
+ * SPDX-License-Identifier: MIT
+ *
+ * Copyright (c) 2025 Junior Coder Rescue Team
+ * (junior.coder.rescue.team@gmail.com)
+ *
+ * See the LICENSE file in the project root for more details.
+ */
+
 #include "dev_led.h"
 
+#include "board_config.h"
 #include "bsp_gpio.h"
-#include "main.h"
 
 void dev_led_on(void)
 {

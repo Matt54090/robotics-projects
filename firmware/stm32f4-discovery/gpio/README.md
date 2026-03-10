@@ -103,13 +103,13 @@ Add:
 Inside main():
 
 ```
-app_Init();
+app_init();
 ```
 
 Inside while loop:
 
 ```
-app_Run();
+app_run();
 ```
 
 Only modify inside USER CODE sections.
@@ -142,3 +142,45 @@ Replace `<project>` with your ELF name.
 - main.c contains no business logic.
 
 This structure scales to larger embedded systems.
+
+## Important
+
+### Makefile
+
+The provided Makefile is **CI-only**.
+
+It is NOT used for flashing or running on hardware.
+
+Firmware generation must be done via STM32CubeIDE + CubeMX.
+
+---
+
+### UNIT_TEST and Mocking
+
+When building with:
+
+-DUNIT_TEST
+
+The project:
+
+- Does NOT include real STM32 HAL
+- Uses `hal_mock.h`
+- Mocks GPIO and HAL functions
+
+This allows CI compilation without STM32 HAL sources.
+
+---
+
+## Board Configuration
+
+All pin mappings are defined in:
+
+common/board_config.h
+
+Example:
+```
+#define GPIO_G_LED_PORT GPIOB
+#define GPIO_G_LED_PIN  GPIO_PIN_12
+```
+
+Change this file when switching boards.
