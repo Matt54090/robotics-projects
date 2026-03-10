@@ -12,6 +12,7 @@ GREEN_CR="\033[0;32m"
 
 export BUILD_DIR="*/build/*"
 export DUMMY_DIR="*/dummy/*"
+export FIRMWARE_DIR="*/firmware/*"
 
 export BACKEND_VIRTUAL_ENV_PATH="*/.env*/*"
 

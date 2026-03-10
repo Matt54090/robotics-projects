@@ -37,7 +37,7 @@ check_build()
         make clean
 
         make 2>&1 | tee "${RESULT}"
-        check_result "jcrt"
+        check_result "${1}"
 
         make clean
 }
@@ -58,7 +58,8 @@ cd "${ROOT_DIR}" || exit 1
 FILES=$(find . \
     -type f \
     -not -path "${BUILD_DIR}" -a \
-    -not -path "${DUMMY_DIR}" \
+    -not -path "${DUMMY_DIR}" -a \
+    -not -path "${FIRMWARE_DIR}" \
     -name "*.c")
 for FILE in ${FILES}
 do
@@ -68,7 +69,7 @@ do
 
     if [ -e "${MAKE}" ]; then
         echo_func "[scm] Building ${FILE} using Makefile." 0
-        check_build
+        check_build "jcrt"
     fi
 
     if [ -e "${CMAKE}" ]; then
@@ -77,11 +78,20 @@ do
         cd build || exit 1
 
         cmake ../
-        check_build
+        check_build "jcrt"
         cd - && rm -rf build
     fi
 
     cd "${ROOT_DIR}" || exit 1
+done
+
+cd "${ROOT_DIR}/firmware" || exit 1
+FILES=$(find . -type f -name "Makefile")
+for FILE in ${FILES}
+do
+    cd "$(dirname "${FILE}")" || exit 1
+    check_build "app/app_main.o"
+    cd - || exit 1
 done
 
 echo_func "[scm] build test complete for the C languages." 0

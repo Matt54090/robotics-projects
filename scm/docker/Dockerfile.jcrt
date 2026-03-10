@@ -20,7 +20,10 @@ RUN	apt-get update && \
 		clang-format \
 		shellcheck \
         cppcheck \
-		valgrind && \
+		valgrind \
+        gcc-arm-none-eabi \
+        binutils-arm-none-eabi \
+        gdb-multiarch && \
 	python3 -m pip install -U pip && \
 	python3 -m pip install isort==6.0.1 \
 		flake8==7.3.0 \
