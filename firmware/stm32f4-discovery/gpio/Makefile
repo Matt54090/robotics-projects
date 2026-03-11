@@ -21,8 +21,8 @@ CFLAGS  := -mcpu=cortex-m4 \
 
 SRC := $(wildcard app/*.c) \
        $(wildcard bsp/*.c) \
-       $(wildcard devices/*.c) \
-       $(wildcard common/*.c)
+       $(wildcard common/*.c) \
+       $(wildcard devices/*.c)
 
 OBJ := $(SRC:.c=.o)
 
@@ -32,4 +32,4 @@ all: $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f app/*.o bsp/*.o devices/*.o common/*.o
+	rm -f app/*.o bsp/*.o common/*.o devices/*.o

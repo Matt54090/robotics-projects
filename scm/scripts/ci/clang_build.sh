@@ -89,8 +89,11 @@ cd "${ROOT_DIR}/firmware" || exit 1
 FILES=$(find . -type f -name "Makefile")
 for FILE in ${FILES}
 do
-    cd "$(dirname "${FILE}")" || exit 1
-    check_build "app/app_main.o"
+    DIR=$(dirname "${FILE}")
+    INTERFACE=$(basename "${DIR}")
+
+    cd "${DIR}" || exit 1
+    check_build "devices/dev_${INTERFACE}.o"
     cd - || exit 1
 done
 

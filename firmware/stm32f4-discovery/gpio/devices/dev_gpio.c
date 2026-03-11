@@ -7,9 +7,9 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include "dev_led.h"
+#include "dev_gpio.h"
 
-#include "board_config.h"
+#include "board_gpio_config.h"
 #include "bsp_gpio.h"
 
 void dev_led_on(void)

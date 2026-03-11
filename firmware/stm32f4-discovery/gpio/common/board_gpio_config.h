@@ -7,13 +7,13 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#ifndef BOARD_CONFIG_H
-#define BOARD_CONFIG_H
+#ifndef BOARD_GPIO_CONFIG_H
+#define BOARD_GPIO_CONFIG_H
 
 #include <stdint.h>
 
 #ifdef UNIT_TEST
-#include "hal_mock.h"
+#include "hal_gpio_mock.h"
 
 extern GPIO_TypeDef mock_gpio_b;
 

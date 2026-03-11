@@ -7,15 +7,15 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include "common.h"
+#include "common_gpio.h"
 
 #ifdef UNIT_TEST
-#include "hal_mock.h"
+#include "hal_gpio_mock.h"
 #else
 #include "stm32f4xx_hal.h"
 #endif
 
-void delay_ms(uint32_t ms)
+void gpio_delay_ms(uint32_t ms)
 {
     HAL_Delay(ms);
 }

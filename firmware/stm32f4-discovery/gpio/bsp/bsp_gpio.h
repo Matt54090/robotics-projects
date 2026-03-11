@@ -11,7 +11,7 @@
 #define BSP_GPIO_H
 
 #ifdef UNIT_TEST
-#include "hal_mock.h"
+#include "hal_gpio_mock.h"
 #else
 #include "stm32f4xx_hal.h"
 #endif

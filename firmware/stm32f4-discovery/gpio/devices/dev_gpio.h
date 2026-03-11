@@ -7,20 +7,10 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include "app_main.h"
+#ifndef DEV_GPIO_H
+#define DEV_GPIO_H
 
-#include "common.h"
-#include "dev_led.h"
+void dev_led_on(void);
+void dev_led_off(void);
 
-void app_init(void)
-{
-}
-
-void app_run(void)
-{
-    dev_led_on();
-    delay_ms(1000);
-
-    dev_led_off();
-    delay_ms(1000);
-}
+#endif /* DEV_GPIO_H */

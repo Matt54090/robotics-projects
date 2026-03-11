@@ -7,8 +7,8 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#ifndef HAL_MOCK_H
-#define HAL_MOCK_H
+#ifndef HAL_GPIO_MOCK_H
+#define HAL_GPIO_MOCK_H
 
 #include <stdint.h>
 
@@ -41,4 +41,4 @@ static inline void HAL_Delay(uint32_t ms)
     (void)ms;
 }
 
-#endif /* HAL_MOCK_H */
+#endif /* HAL_GPIO_MOCK_H */
