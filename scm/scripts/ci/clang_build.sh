@@ -19,15 +19,16 @@ check_result()
     CHECK=$(grep -iE "(err|warn)" < "${RESULT}")
     rm "${RESULT}"
     if [ "${CHECK}" != "" ]; then
-        echo_func "[SCM ERR] occurred the issue error or warning when compile." 1
+        echo_func \
+            "[SCM ERR] occurred the issue error or warning when compile." 1
         exit 1
     fi
     set -e
 
     if [ -f "${1}" ]; then
-        echo_func "[scm] Successfully the compile." 0
+        echo_func "[scm] Successfully the compile. ${1}" 0
     else
-        echo_func "[SCM ERR] Failed to get the target,," 1
+        echo_func "[SCM ERR] Failed to get the target,, ${1}" 1
         exit 1
     fi
 }
@@ -93,6 +94,8 @@ do
     INTERFACE=$(basename "${DIR}")
 
     cd "${DIR}" || exit 1
+    echo_func "[scm] pwd: ${DIR}." 0
+
     check_build "devices/dev_${INTERFACE}.o"
     cd - || exit 1
 done
