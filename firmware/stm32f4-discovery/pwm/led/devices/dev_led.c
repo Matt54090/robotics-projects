@@ -19,7 +19,7 @@ void dev_led_init(led_ctx_t *ctx)
     bsp_led_pwm_set(ctx->brightness);
 }
 
-void dev_led_set_brightness(led_ctx_t *ctx, uint16_t brightness)
+void dev_led_set_brightness(led_ctx_t *ctx, int16_t brightness)
 {
     if (brightness > LED_BRIGHTNESS_MAX)
         brightness = LED_BRIGHTNESS_MAX;

@@ -15,7 +15,7 @@
 #include "bsp_led.h"
 
 void bsp_led_pwm_init(void);
-void bsp_led_pwm_set(uint16_t duty);
+void bsp_led_pwm_set(int16_t duty);
 uint32_t bsp_led_pwm_time_get_tick(void);
 
 #endif /* BSP_LED_H */

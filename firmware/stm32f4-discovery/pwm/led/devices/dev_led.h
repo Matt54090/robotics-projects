@@ -13,10 +13,10 @@
 #include <stdint.h>
 
 typedef struct {
-    uint16_t brightness;
+    int16_t brightness;
 } led_ctx_t;
 
 void dev_led_init(led_ctx_t *ctx);
-void dev_led_set_brightness(led_ctx_t *ctx, uint16_t brightness);
+void dev_led_set_brightness(led_ctx_t *ctx, int16_t brightness);
 
 #endif /* DEV_LED_H */

@@ -22,9 +22,9 @@ void bsp_led_pwm_init(void)
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
 }
 
-void bsp_led_pwm_set(uint16_t duty)
+void bsp_led_pwm_set(int16_t duty)
 {
-    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, duty);
+    __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, (uint16_t)duty);
 }
 
 uint32_t bsp_led_pwm_time_get_tick(void)
