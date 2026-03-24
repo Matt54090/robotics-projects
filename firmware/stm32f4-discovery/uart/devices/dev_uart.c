@@ -13,15 +13,15 @@
 #include <stdio.h>
 #include <string.h>
 
-static dev_uart_ctx_t g_dev_ctx;
+static dev_uart_ctx_t *g_dev_ctx;
 
 void dev_uart_init(dev_uart_ctx_t *ctx)
 {
     memset(ctx, 0x0, sizeof(dev_uart_ctx_t));
-    memset(&g_dev_ctx, 0x0, sizeof(dev_uart_ctx_t));
 
     bsp_uart_init(&ctx->bsp);
-    bsp_uart_init(&g_dev_ctx.bsp);
+
+    g_dev_ctx = ctx;
 }
 
 void dev_uart_send(dev_uart_ctx_t *ctx, uint8_t *data, uint16_t len)
@@ -34,7 +34,10 @@ void dev_uart_send(dev_uart_ctx_t *ctx, uint8_t *data, uint16_t len)
 
 int dev_printf(const char *fmt, ...)
 {
-    dev_uart_ctx_t *ctx = &g_dev_ctx;
+    if (g_dev_ctx == NULL)
+        return -1;
+
+    dev_uart_ctx_t *ctx = g_dev_ctx;
 
     va_list args;
     va_start(args, fmt);
