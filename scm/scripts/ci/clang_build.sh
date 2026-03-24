@@ -87,7 +87,7 @@ do
 done
 
 cd "${ROOT_DIR}/firmware" || exit 1
-FILES=$(find . -type f -name "Makefile")
+FILES=$(find . -type l -name "Makefile")
 for FILE in ${FILES}
 do
     DIR=$(dirname "${FILE}")
