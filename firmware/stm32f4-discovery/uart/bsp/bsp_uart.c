@@ -42,9 +42,14 @@ status_e bsp_uart_is_tx_busy(bsp_uart_ctx_t *ctx)
     return (ctx->tx_busy == STATUS_BUSY) ? STATUS_BUSY : STATUS_IDLE;
 }
 
-uint32_t bsp_time_get_tick(void)
+uint32_t bsp_uart_time_get_tick(void)
 {
     return HAL_GetTick();
+}
+
+void bsp_uart_delay_ms(uint32_t ms)
+{
+    HAL_Delay(ms);
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)

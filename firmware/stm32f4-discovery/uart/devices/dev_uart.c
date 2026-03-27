@@ -30,6 +30,7 @@ void dev_uart_send(dev_uart_ctx_t *ctx, uint8_t *data, uint16_t len)
         ;
 
     bsp_uart_transmit(&ctx->bsp, data, len);
+    bsp_uart_delay_ms(100);
 }
 
 int dev_printf(const char *fmt, ...)
@@ -57,5 +58,5 @@ int dev_printf(const char *fmt, ...)
 
 uint32_t dev_time_get_tick(void)
 {
-    return bsp_time_get_tick();
+    return bsp_uart_time_get_tick();
 }

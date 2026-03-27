@@ -46,4 +46,9 @@ static inline uint32_t HAL_GetTick(void)
     return 0;
 }
 
+static inline void HAL_Delay(uint32_t ms)
+{
+    (void)ms;
+}
+
 #endif /* HAL_UART_MOCK_H */

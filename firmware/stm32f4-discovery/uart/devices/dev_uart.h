@@ -26,6 +26,6 @@ void dev_uart_init(dev_uart_ctx_t *ctx);
 void dev_uart_send(dev_uart_ctx_t *ctx, uint8_t *data, uint16_t len);
 int dev_printf(const char *fmt, ...);
 
-uint32_t dev_time_get_tick(void);
+uint32_t dev_uart_time_get_tick(void);
 
 #endif

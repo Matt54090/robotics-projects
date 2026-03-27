@@ -21,7 +21,7 @@ void app_uart_init(app_uart_ctx_t *ctx)
 void app_uart_run(app_uart_ctx_t *ctx)
 {
     int len;
-    uint32_t now = dev_time_get_tick();
+    uint32_t now = dev_uart_time_get_tick();
 
     if (now - ctx->last_tick >= 1000)
     {

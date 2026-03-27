@@ -31,6 +31,7 @@ void bsp_uart_init(bsp_uart_ctx_t *ctx);
 status_e bsp_uart_transmit(bsp_uart_ctx_t *ctx, uint8_t *data, uint16_t len);
 status_e bsp_uart_is_tx_busy(bsp_uart_ctx_t *ctx);
 
-uint32_t bsp_time_get_tick(void);
+uint32_t bsp_uart_time_get_tick(void);
+void bsp_uart_delay_ms(uint32_t ms);
 
 #endif /* BSP_UART_H */
