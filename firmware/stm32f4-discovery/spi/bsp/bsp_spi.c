@@ -38,6 +38,8 @@ int bsp_spi_write(uint8_t reg, uint8_t data)
     RC522_CS_HIGH();
     HAL_Delay(1);
     RC522_CS_LOW();
+    HAL_Delay(1);
+
     int ret = HAL_SPI_Transmit(&hspi1, buf, 2, 100);
     if (ret != HAL_OK)
     {
@@ -59,6 +61,8 @@ int bsp_spi_read(uint8_t reg, uint8_t *data)
     RC522_CS_HIGH();
     HAL_Delay(1);
     RC522_CS_LOW();
+    HAL_Delay(1);
+
     HAL_SPI_TransmitReceive(&hspi1, tx, rx, 2, 1000);
     RC522_CS_HIGH();
 

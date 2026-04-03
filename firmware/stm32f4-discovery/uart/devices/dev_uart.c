@@ -30,7 +30,7 @@ void dev_uart_send(dev_uart_ctx_t *ctx, uint8_t *data, uint16_t len)
         ;
 
     bsp_uart_transmit(&ctx->bsp, data, len);
-    bsp_uart_delay_ms(100);
+    bsp_uart_delay_ms(1);
 }
 
 int dev_printf(const char *fmt, ...)

@@ -29,31 +29,32 @@ int dev_spi_init(rc522_ctx_t *ctx)
 
     bsp_spi_init();
 
-    // 1. reset
     bsp_spi_write(RC522_REG_COMMAND, RC522_CMD_SOFT_RESET);
     bsp_spi_delay(50);
 
-    // 🔥 반드시 추가
+    uint8_t val;
+    do
+    {
+        bsp_spi_read(RC522_REG_COMMAND, &val);
+    } while (val & (1 << 4));
+    bsp_spi_delay(10);
+
     bsp_spi_write(RC522_REG_COMMAND, RC522_CMD_IDLE);
 
-    // 2. Timer
     bsp_spi_write(RC522_REG_TMODE, RC522_TIMER_MODE);
     bsp_spi_write(RC522_REG_TPRESCALER, RC522_TIMER_PRESCALER);
 
-    // 3. Timer reload
     bsp_spi_write(RC522_REG_TRELOAD_L, RC522_TIMER_RELOAD_L);
     bsp_spi_write(RC522_REG_TRELOAD_H, RC522_TIMER_RELOAD_H);
 
-    // 4. ASK
     bsp_spi_write(RC522_REG_TX_ASK, RC522_TXASK_ENABLE);
 
-    // 5. Mode
     bsp_spi_write(RC522_REG_MODE, RC522_MODE_DEFAULT);
 
-    // 6. Antenna ON (안전 방식)
-    uint8_t val;
     bsp_spi_read(RC522_REG_TX_CONTROL, &val);
     bsp_spi_write(RC522_REG_TX_CONTROL, val | 0x03);
+
+    bsp_spi_delay(10);
 
     return 0;
 }
