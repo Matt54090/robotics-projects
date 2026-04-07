@@ -1,1 +1,0 @@
-../../../common/build_tools/Makefile_for_discovery

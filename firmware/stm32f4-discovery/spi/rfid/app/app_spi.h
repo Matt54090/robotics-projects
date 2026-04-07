@@ -10,7 +10,7 @@
 #ifndef APP_RC522_H
 #define APP_RC522_H
 
-#include "dev_spi.h"
+#include "dev_rfid.h"
 
 typedef struct {
     rc522_ctx_t dev;

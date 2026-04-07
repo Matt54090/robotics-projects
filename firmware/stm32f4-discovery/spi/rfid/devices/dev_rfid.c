@@ -7,7 +7,7 @@
  * See the LICENSE file in the project root for more details.
  */
 
-#include "dev_spi.h"
+#include "dev_rfid.h"
 
 #include "bsp_spi.h"
 
