@@ -19,6 +19,8 @@ CFLAGS  := -mcpu=cortex-m4 \
            -Iapp \
 		   -DUNIT_TEST
 
+CFLAGS += -Iinclude
+
 SRC := $(wildcard app/*.c) \
        $(wildcard bsp/*.c) \
        $(wildcard common/*.c) \
