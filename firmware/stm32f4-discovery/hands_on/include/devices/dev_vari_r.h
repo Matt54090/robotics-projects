@@ -10,6 +10,8 @@
 #ifndef DEV_VARI_R_H
 #define DEV_VARI_R_H
 
+#define BATTERY_LOW_THRESHOLD 1.65f
+
 void dev_vari_r_init(void);
 float dev_vari_r_read_voltage(void);
 

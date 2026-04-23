@@ -9,6 +9,8 @@
 
 #include "app/app_main.h"
 
+#include <stdio.h>
+
 #include "devices/dev_imu.h"
 #include "devices/dev_lcd.h"
 #include "devices/dev_led.h"
@@ -109,15 +111,47 @@ static void _update_state(app_ctx_t *ctx)
     switch (ctx->state)
     {
     case SYSTEM_STATE_IDLE:
-        dev_led_set(LED_GREEN, 1);
+        char buf[32];
+        float voltage = dev_vari_r_read_voltage();
+
+        static uint32_t last_bat_tx = 0;
+
+        if (voltage < BATTERY_LOW_THRESHOLD)
+        {
+            dev_led_blink(LED_RED);
+            dev_led_set(LED_YELLOW, 0);
+            dev_led_set(LED_GREEN, 0);
+
+            snprintf(buf, sizeof(buf), "Low Bat: %.2fV ", voltage);
+
+            if (dev_get_tick() - last_bat_tx > 1000)
+            {
+                dev_protocol_send(PROTOCOL_BATTERY_LOW,
+                                  (uint32_t)(voltage * 100));
+                last_bat_tx = dev_get_tick();
+            }
+        }
+        else
+        {
+            dev_led_set(LED_RED, 0);
+            dev_led_set(LED_YELLOW, 0);
+            dev_led_set(LED_GREEN, 1);
+
+            snprintf(buf, sizeof(buf), "Battery: %.2fV ", voltage);
+        }
 
         dev_lcd_set_cursor(0, 0);
-        dev_lcd_printf("[JCRT] Idle,,");
+        dev_lcd_printf("[JCRT] Idle,,   ");
+        dev_lcd_set_cursor(1, 0);
+        dev_lcd_printf(buf);
+
         break;
 
     case SYSTEM_STATE_DOOR_OPEN:
         dev_servo_open();
+        dev_led_set(LED_RED, 0);
         dev_led_blink(LED_YELLOW);
+        dev_led_set(LED_GREEN, 1);
 
         dev_lcd_set_cursor(0, 0);
         dev_lcd_printf("[JCRT] Door Open");
@@ -131,6 +165,8 @@ static void _update_state(app_ctx_t *ctx)
 
     case SYSTEM_STATE_ALERT:
         dev_led_blink(LED_RED);
+        dev_led_set(LED_YELLOW, 0);
+        dev_led_set(LED_GREEN, 1);
 
         dev_lcd_set_cursor(0, 0);
         dev_lcd_printf("[JCRT] Alert!!!!");

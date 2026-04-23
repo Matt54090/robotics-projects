@@ -34,7 +34,8 @@ typedef enum {
 
 typedef enum {
     PROTOCOL_DOOR_OPEN = 0x01,
-    PROTOCOL_IMU_ALERT = 0x03
+    PROTOCOL_IMU_ALERT,
+    PROTOCOL_BATTERY_LOW,
 } protocol_e;
 
 typedef enum {

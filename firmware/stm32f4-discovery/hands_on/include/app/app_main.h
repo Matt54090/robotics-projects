@@ -19,6 +19,7 @@ typedef struct {
     uint32_t tick;
 } app_ctx_t;
 
+int app_main_init(app_ctx_t *ctx);
 int app_main_run(app_ctx_t *ctx);
 
 #endif /* APP_MAIN_H */

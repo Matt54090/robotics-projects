@@ -19,9 +19,9 @@ int bsp_gpio_write(led_e led, int state)
     if (led >= LED_GREEN + 1)
         return RETURN_ERROR;
 
-    const gpio_map_t led_map[] = {[LED_RED] = {GPIOB, GPIO_PIN_12},
+    const gpio_map_t led_map[] = {[LED_RED] = {GPIOB, GPIO_PIN_14},
                                   [LED_YELLOW] = {GPIOB, GPIO_PIN_13},
-                                  [LED_GREEN] = {GPIOB, GPIO_PIN_14}};
+                                  [LED_GREEN] = {GPIOB, GPIO_PIN_12}};
 
     HAL_GPIO_WritePin(led_map[led].port, led_map[led].pin,
                       state ? GPIO_PIN_SET : GPIO_PIN_RESET);

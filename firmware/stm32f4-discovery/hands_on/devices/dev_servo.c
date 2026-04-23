@@ -14,6 +14,8 @@
 void dev_servo_init(void)
 {
     bsp_pwm_init();
+
+    dev_servo_close();
 }
 
 void dev_servo_open(void)

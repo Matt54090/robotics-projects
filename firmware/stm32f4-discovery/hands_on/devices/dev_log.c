@@ -69,8 +69,6 @@ int dev_printf(const char *fmt, ...)
 
 int dev_protocol_send(protocol_e type, uint32_t data)
 {
-    dev_log_ctx_t *ctx = &g_dev_ctx;
-
     uint8_t buf[8];
 
     buf[0] = 0xAA;
@@ -84,7 +82,7 @@ int dev_protocol_send(protocol_e type, uint32_t data)
     buf[6] = buf[1] ^ buf[2] ^ buf[3] ^ buf[4] ^ buf[5];
     buf[7] = 0x55;
 
-    bsp_uart_transmit(&ctx->bsp, buf, sizeof(buf));
+    dev_log_send(buf, sizeof(buf));
 
     return 0;
 }
