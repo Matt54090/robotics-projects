@@ -40,6 +40,8 @@ static volatile uint32_t pulse_width = 0;
 
 static volatile ultra_state_e state = ULTRA_STATE_IDLE;
 
+static uint32_t trigger_start_tick = 0;
+
 int bsp_timer_init(void)
 {
     HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_RESET);
@@ -56,8 +58,16 @@ int bsp_timer_init(void)
 
 int bsp_timer_trigger(void)
 {
+    uint32_t now = bsp_get_tick();
+
     if (state != ULTRA_STATE_IDLE)
-        return RETURN_ERROR;
+    {
+        if ((uint32_t)(now - trigger_start_tick) > 50)
+            state = ULTRA_STATE_IDLE;
+        else
+            return RETURN_ERROR;
+    }
+    trigger_start_tick = now;
 
     HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_SET);
     _delay_us(10);
@@ -70,6 +80,17 @@ int bsp_timer_trigger(void)
 
 int bsp_timer_get_pulse(uint32_t *pulse)
 {
+    uint32_t now = bsp_get_tick();
+
+    if (state == ULTRA_STATE_WAIT_RISING || state == ULTRA_STATE_WAIT_FALLING)
+    {
+        if ((uint32_t)(now - trigger_start_tick) > 50)
+        {
+            state = ULTRA_STATE_IDLE;
+            return RETURN_ERROR;
+        }
+    }
+
     if (state != ULTRA_STATE_DONE)
         return RETURN_ERROR;
 
