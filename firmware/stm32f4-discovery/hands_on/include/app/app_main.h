@@ -17,6 +17,9 @@
 typedef struct {
     system_state_e state;
     uint32_t tick;
+
+    uint32_t door_tick;
+    int door_open;
 } app_ctx_t;
 
 int app_main_init(app_ctx_t *ctx);

@@ -87,7 +87,8 @@ static void _handle_event(app_ctx_t *ctx, system_event_e evt, uint32_t data)
     {
     case EVENT_ULTRASONIC:
         ctx->state = SYSTEM_STATE_DOOR_OPEN;
-        ctx->tick = dev_get_tick();
+        ctx->door_tick = dev_get_tick();
+        ctx->door_open = 1;
 
         dev_protocol_send(PROTOCOL_DOOR_OPEN, data);
         break;
@@ -156,9 +157,10 @@ static void _update_state(app_ctx_t *ctx)
         dev_lcd_set_cursor(0, 0);
         dev_lcd_printf("[JCRT] Door Open");
 
-        if (now - ctx->tick > 5000)
+        if (now - ctx->door_tick > 5000)
         {
             dev_servo_close();
+            ctx->door_open = 0;
             ctx->state = SYSTEM_STATE_IDLE;
         }
         break;
@@ -173,6 +175,15 @@ static void _update_state(app_ctx_t *ctx)
 
         if (now - ctx->tick > 5000)
             ctx->state = SYSTEM_STATE_IDLE;
+
+        if (ctx->door_open)
+        {
+            if (now - ctx->door_tick > 5000)
+            {
+                dev_servo_close();
+                ctx->door_open = 0;
+            }
+        }
         break;
     }
 }
