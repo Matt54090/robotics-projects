@@ -42,6 +42,7 @@ find . \
 	-not -path "${BUILD_DIR}" -a \
 	-not -path "${DUMMY_DIR}" -a \
 	-not -path "${BACKEND_VIRTUAL_ENV_PATH}" \
+	-not -path "${ETC_DIR}" \
 	! -name "${TAG_FILE}" \
 	! -name "${CSCOPE_FILE}" \
 	-exec sed -i '${/^$/d;}' {} \;
@@ -54,6 +55,7 @@ find . \
 	-not -path "${BUILD_DIR}" -a \
 	-not -path "${DUMMY_DIR}" -a \
 	-not -path "${BACKEND_VIRTUAL_ENV_PATH}" \
+	-not -path "${ETC_DIR}" \
 	! -name "${TAG_FILE}" \
 	! -name "${CSCOPE_FILE}" \
 	-exec sed -i 's/[[:space:]]*$//' {} \;

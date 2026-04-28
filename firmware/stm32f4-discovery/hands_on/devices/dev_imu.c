@@ -28,7 +28,7 @@ typedef enum {
 
 int dev_imu_init(void)
 {
-    return bsp_i2c_write(MPU6050_ADDR, MPU6050_REG_PWR_MGMT_1, 0x00);
+    return bsp_i2c_write(MPU6050_ADDR, MPU6050_REG_PWR_MGMT_1, 0x00, 1);
 }
 
 int dev_imu_read_id(uint8_t *id)

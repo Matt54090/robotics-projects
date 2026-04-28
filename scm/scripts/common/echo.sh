@@ -16,6 +16,8 @@ export FIRMWARE_DIR="*/firmware/*"
 
 export BACKEND_VIRTUAL_ENV_PATH="*/.env*/*"
 
+export ETC_DIR="*/etc/*"
+
 export TAG_FILE="tags"
 export CSCOPE_FILE="cscope.*"
 

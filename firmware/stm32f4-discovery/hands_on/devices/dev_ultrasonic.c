@@ -15,6 +15,8 @@
 #define SOUND_SPEED 0.034f
 #define TIMEOUT_MS 50
 
+#define DISTANCE_THRESHOLD_CM 10
+
 void dev_ultrasonic_init(void)
 {
     bsp_timer_init();
@@ -45,7 +47,7 @@ int dev_ultrasonic_detect(void)
     if (dev_ultrasonic_read_cm(&distance) != 0)
         return RETURN_ERROR;
 
-    if (distance < 10)
+    if (distance < DISTANCE_THRESHOLD_CM)
         return RETURN_OK;
 
     return RETURN_ERROR;

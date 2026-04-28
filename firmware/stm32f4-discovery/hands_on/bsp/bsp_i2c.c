@@ -16,10 +16,10 @@
 #define I2C_MEMADD_SIZE_8BIT 0x01
 #endif
 
-int bsp_i2c_write(uint16_t dev_addr, uint8_t reg, uint8_t data)
+int bsp_i2c_write(uint16_t dev_addr, uint8_t reg, uint8_t data, uint16_t len)
 {
     return HAL_I2C_Mem_Write(&BOARD_I2C_HANDLE, dev_addr, reg,
-                             I2C_MEMADD_SIZE_8BIT, &data, 1, TIMEOUT);
+                             I2C_MEMADD_SIZE_8BIT, &data, len, TIMEOUT);
 }
 
 int bsp_i2c_read(uint16_t dev_addr, uint8_t reg, uint8_t *buf, uint16_t len)

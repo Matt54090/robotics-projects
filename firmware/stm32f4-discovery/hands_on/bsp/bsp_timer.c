@@ -31,6 +31,11 @@ typedef enum {
     ULTRA_STATE_ERROR
 } ultra_state_e;
 
+typedef enum {
+    ULTRA_TIME_TRIGGER = 50,
+    ULTRA_TIME_SHOOT = 10,
+} ultra_time_e;
+
 static uint32_t _timer_get_us(void);
 static void _delay_us(uint32_t us);
 
@@ -62,7 +67,7 @@ int bsp_timer_trigger(void)
 
     if (state != ULTRA_STATE_IDLE)
     {
-        if ((uint32_t)(now - trigger_start_tick) > 50)
+        if ((uint32_t)(now - trigger_start_tick) > ULTRA_TIME_TRIGGER)
             state = ULTRA_STATE_IDLE;
         else
             return RETURN_ERROR;
@@ -70,7 +75,7 @@ int bsp_timer_trigger(void)
     trigger_start_tick = now;
 
     HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_SET);
-    _delay_us(10);
+    _delay_us(ULTRA_TIME_SHOOT);
     HAL_GPIO_WritePin(TRIG_GPIO_Port, TRIG_Pin, GPIO_PIN_RESET);
 
     state = ULTRA_STATE_WAIT_RISING;
@@ -84,7 +89,7 @@ int bsp_timer_get_pulse(uint32_t *pulse)
 
     if (state == ULTRA_STATE_WAIT_RISING || state == ULTRA_STATE_WAIT_FALLING)
     {
-        if ((uint32_t)(now - trigger_start_tick) > 50)
+        if ((uint32_t)(now - trigger_start_tick) > ULTRA_TIME_TRIGGER)
         {
             state = ULTRA_STATE_IDLE;
             return RETURN_ERROR;

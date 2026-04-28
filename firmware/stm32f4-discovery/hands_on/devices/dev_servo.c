@@ -11,6 +11,11 @@
 
 #include "bsp/bsp_pwm.h"
 
+enum {
+    SERVO_PULSE_OPEN = 2000,
+    SERVO_PULSE_CLOSE = 1000
+};
+
 void dev_servo_init(void)
 {
     bsp_pwm_init();
@@ -20,10 +25,10 @@ void dev_servo_init(void)
 
 void dev_servo_open(void)
 {
-    bsp_pwm_set_pulse(2000);
+    bsp_pwm_set_pulse(SERVO_PULSE_OPEN);
 }
 
 void dev_servo_close(void)
 {
-    bsp_pwm_set_pulse(1000);
+    bsp_pwm_set_pulse(SERVO_PULSE_CLOSE);
 }

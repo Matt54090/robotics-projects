@@ -12,6 +12,14 @@
 
 #include <stdint.h>
 
+typedef enum {
+    LCD_FIRST_ROW = 0,
+    LCD_SECOND_ROW,
+
+    LCD_FIRST_COL = 0,
+    LCD_SECOND_COL,
+} lcd_position_e;
+
 void dev_lcd_init(void);
 void dev_lcd_set_cursor(uint8_t row, uint8_t col);
 void dev_lcd_printf(const char *fmt, ...);
