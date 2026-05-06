@@ -1,5 +1,6 @@
 # Reference Documentation
 
+
 ## Basic Packages for Ubuntu 24.04 as below,
 
 ```
@@ -71,6 +72,7 @@ $ bear --version
 }
 ```
 
+
 #### .vscode/tasks.json
 
 ```
@@ -93,6 +95,7 @@ $ bear --version
     ]
 }
 ```
+
 
 #### .vscode/launch.json
 
@@ -117,6 +120,7 @@ $ bear --version
 }
 ```
 
+
 #### .clang-format
 
 ```
@@ -129,6 +133,7 @@ BreakBeforeBraces: Allman
 AllowShortIfStatementsOnASingleLine: false
 SortIncludes: false
 ```
+
 
 #### .clangd
 
@@ -160,11 +165,13 @@ flash:
 		-c "program build/$(TARGET).elf verify reset exit"
 ```
 
+
 ### Compile
 
 ```
 $ make -j
 ```
+
 
 ### Flash
 
@@ -172,8 +179,37 @@ $ make -j
 $ make flash
 ```
 
+
 ### Create the Database for clangd
 
 ```
 $ bear -- make -j
+```
+
+
+### for printf with floating point support,
+
+```
+LDFLAGS += -u _printf_float
+```
+
+
+## Add the icon for the operating the application
+
+
+### ~/.local/share/applications/stm32f4cubemx.desktop
+
+```
+[Desktop Entry]
+Name=STM32CubeMX
+Comment=STM32 Configuration Tool
+Exec=/usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/STM32CubeMX
+Icon=/usr/local/STMicroelectronics/STM32Cube/STM32CubeMX/help/STM32CubeMX.png
+Terminal=false
+Type=Application
+Categories=Development;
+```
+
+```
+$ update-desktop-database ~/.local/share/applications
 ```
