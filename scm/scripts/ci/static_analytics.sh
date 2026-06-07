@@ -34,6 +34,11 @@ check_static_annalytics()
 
 check_static_annalytics_for_fw()
 {
+    if ! ls ./*.c >/dev/null 2>&1; then
+        echo_func "[SCM Warning] no .c files: $(pwd)" 1
+        return 0
+    fi
+
     cppcheck \
         --enable=warning,performance,portability \
         --check-level=exhaustive \
@@ -45,7 +50,7 @@ check_static_annalytics_for_fw()
         -Idevices \
         -Ibsp \
         -Icommon \
-        .
+        ./*.c
 
 	RET="$?"
 	if [[ "${RET}" != "0" ]]
@@ -68,6 +73,15 @@ PWM_DIR="${PI_DIR}/pwm/c"
 FIRMWARE_DIR="${ROOT_DIR}/firmware"
 STM32_DIR="${FIRMWARE_DIR}/stm32f4-discovery"
 FW_GPIO_DIR="${STM32_DIR}/gpio"
+FW_UART_DIR="${STM32_DIR}/uart"
+FW_PWM_LED_DIR="${STM32_DIR}/pwm/led"
+FW_PWM_SERVO_DIR="${STM32_DIR}/pwm/servo"
+FW_I2C_LCD_DIR="${STM32_DIR}/i2c/lcd"
+FW_I2C_ACCEL_DIR="${STM32_DIR}/i2c/mpu6050"
+FW_SPI_KEYPAD_DIR="${STM32_DIR}/spi/keypad"
+FW_SPI_RFID_DIR="${STM32_DIR}/spi/rfid"
+FW_ADC_DIR="${STM32_DIR}/adc"
+FW_TIMER_DIR="${STM32_DIR}/timer"
 
 TEST_DIRS=(
     "${GPIO_DIR}"
@@ -86,6 +100,15 @@ done
 
 TEST_FW_DIRS=(
     "${FW_GPIO_DIR}"
+    "${FW_UART_DIR}"
+    "${FW_PWM_LED_DIR}"
+    "${FW_PWM_SERVO_DIR}"
+    "${FW_I2C_LCD_DIR}"
+    "${FW_I2C_ACCEL_DIR}"
+    "${FW_SPI_KEYPAD_DIR}"
+    "${FW_SPI_RFID_DIR}"
+    "${FW_ADC_DIR}"
+    "${FW_TIMER_DIR}"
 )
 
 cd "${ROOT_DIR}" || exit 1

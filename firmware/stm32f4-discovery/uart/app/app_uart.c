@@ -27,7 +27,7 @@ void app_uart_run(app_uart_ctx_t *ctx)
     {
         ctx->last_tick = now;
         len = snprintf(ctx->msg, sizeof(ctx->msg), "[STM] alive %lu\r\n",
-                       ctx->count++);
+                       (unsigned long)ctx->count++);
 
         dev_uart_send(&ctx->uart, (uint8_t *)ctx->msg, len);
     }
