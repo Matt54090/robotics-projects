@@ -1,0 +1,12 @@
+[submodule "self-driving-patrol-car/third_party/glog"]
+	path = self-driving-patrol-car/third_party/glog
+	url = https://github.com/google/glog.git
+[submodule "self-driving-patrol-car/third_party/mosquitto"]
+	path = self-driving-patrol-car/third_party/mosquitto
+	url = https://github.com/eclipse/mosquitto.git
+[submodule "self-driving-patrol-car/third_party/rplidar_sdk"]
+	path = self-driving-patrol-car/third_party/rplidar_sdk
+	url = https://github.com/Slamtec/rplidar_sdk
+[submodule "self-driving-patrol-car/third_party/MATLAB-SIMULINK-code-generation"]
+	path = self-driving-patrol-car/third_party/MATLAB-SIMULINK-code-generation
+	url = https://github.com/kimjs98/MATLAB-SIMULINK-code-generation

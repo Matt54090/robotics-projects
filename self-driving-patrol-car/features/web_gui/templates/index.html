@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<title>Patrol Car Project!</title>
+		<link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
+	</head>
+	<body>
+		<h1 class="welcome">Hello, visitor!</h1>
+		<div class="intro">
+			<img src = "{{ url_for('static', path='/img/PatrolCar.png') }}">
+			<h3 class="top_word"><br>This is the <span class="red">web page</span></h3>
+			<h3 class="middle_word">for the</h3>
+			<h3 class="bottom_word"><span class="red">patrol car</span> project.</h3>
+		</div>
+		<br>
+		<div class="null"></div>
+		<h3>Patrol vehicle robots fuse lidar sensor and camera sensors to perform autonomous driving, and have the following functions.</h3>
+		<ol>
+			<h4>
+			<li>Identify and photograph speeding vehicles.</li>
+			<br>
+			<li>Recognize the accident site and take photos and action.</li>
+			<br>
+			<li>Recognize defective lane and receive loaction information through GPS</li>
+			</h4>
+		</ol>
+    <br>
+		<div class="processing">
+			<h4>
+			The image below is an image processing of the patrol car
+			<img src="{{ url_for('get_video') }}" width="100%">
+			</h4>
+		</div>
+	</body>
+</html>

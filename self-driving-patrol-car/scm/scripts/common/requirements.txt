@@ -1,0 +1,9 @@
+pip
+setuptools
+flake8==3.8.4
+isort==4.3.4
+pylint==1.8.3
+yapf==0.30.0
+cpplint==1.5.4
+cmake==3.22.1
+cmakelint==1.4.1

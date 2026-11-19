@@ -1,0 +1,89 @@
+stages:
+    - general
+    - lang_check
+    - static_analytics
+    - build
+
+.caching:
+    cache:
+        key: "$CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR"
+        policy: pull
+        paths:
+            - core/out/
+            - features/lane_detection/out/
+            - features/mcu_control/out/
+
+General Test:
+    extends: .caching
+    stage: general
+    tags:
+        - pycounter
+    script:
+        - echo "This is the general test stage."
+        - scm/scripts/ci/general_ci.sh
+
+Bash Test:
+    extends: .caching
+    stage: lang_check
+    tags:
+        - pycounter
+    script:
+        - echo "This is the Bash Script CI check stage."
+        - scm/scripts/ci/bash_ci.sh
+
+CMake Test:
+    extends: .caching
+    stage: lang_check
+    tags:
+        - pycounter
+    script:
+        - echo "This is the CMake CI check stage."
+        - scm/scripts/ci/cmake_ci.sh
+
+C++ Language Test:
+    stage: lang_check
+    tags:
+        - pycounter
+    script:
+        - echo "This is the CPP language CI check stage."
+        - scm/scripts/ci/cpp_ci.sh
+
+C Language Test:
+    extends: .caching
+    stage: lang_check
+    tags:
+        - pycounter
+    script:
+        - echo "This is the C language CI check stage."
+        - scm/scripts/ci/clang_ci.sh
+
+Python Test:
+    image: pythonci:20.04
+    extends: .caching
+    stage: lang_check
+    tags:
+        - pycounter
+    script:
+        - echo "This is the python CI check stage."
+        - scm/scripts/ci/python_ci.sh
+
+Static Anaytics Test:
+    extends: .caching
+    stage: static_analytics
+    tags:
+        - pycounter
+    script:
+        - echo "This is the Static Anaytics CI check stage."
+        - scm/scripts/ci/static_analytics.sh
+
+Build:
+    image: sdpc:build
+    extends: .caching
+    stage: build
+    tags:
+        - pycounter
+    script:
+        - echo "This is the build stage."
+        - scm/scripts/ci/build_ci.sh
+    cache:
+      policy: push
