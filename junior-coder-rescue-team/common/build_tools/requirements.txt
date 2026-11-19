@@ -1,0 +1,5 @@
+RPi.GPIO
+pygpio
+pyserial
+smbus2
+pi-rc522

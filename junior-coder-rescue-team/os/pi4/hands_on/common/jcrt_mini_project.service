@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2025 Junior Coder Rescue Team
+# (junior.coder.rescue.team@gmail.com)
+#
+# See the LICENSE file in the project root for more details.
+
+[Unit]
+Description=Robot Daemon for Mini Project
+After=network.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=pi4
+
+WorkingDirectory=/home/pi4/junior-coder-rescue-team/os/pi4/hands_on
+ExecStart=/home/pi4/junior-coder-rescue-team/os/pi4/hands_on/.env/bin/python /home/pi4/junior-coder-rescue-team/os/pi4/hands_on/main.py
+
+Restart=on-failure
+RestartSec=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

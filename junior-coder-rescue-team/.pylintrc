@@ -1,0 +1,5 @@
+[TYPECHECK]
+ignored-modules=RPi
+
+[MESSAGES CONTROL]
+disable=C0411,C0412

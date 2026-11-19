@@ -1,0 +1,55 @@
+# Prerequisites
+
+Install the packages below,
+
+```
+$ sudo apt install python3-dev \
+                    python3-setuptools \
+                    python3-venv \
+                    python3-pip \
+                    python3-rpi.gpio \
+                    pigpio \
+                    python3-pigpio \
+                    python3-smbus \
+                    i2c-tools \
+                    python3-matplotlib \
+                    python3-spidev
+```
+
+Check the pigpio deamon is running for PWM
+
+```
+$ sudo systemctl status pigpiod
+$ sudo systemctl start pigpiod
+```
+
+for enabing the I2C bus
+```
+$ sudo raspi-config → Interface Options → I2C Enable
+$ dmesg | grep -i i2c
+$ ls -al /dev/i2c*
+````
+
+for enabling the SPI bus
+
+```
+$ sudo raspi-config → Interface Options → SPI Enable
+$ dmesg | grep -i spi
+$ ls -al /dev/spi*
+```
+
+Setup the virtual environment.
+
+```
+$ python3 -m venv .env --system-site-packages
+$ source .env/bin/activate
+(.env) $ pip install -U pip
+(.env) $ pip install -r <root_dir>/common/build_tools/requirements.txt
+```
+
+
+# Execute the python code
+
+```
+(.env) $ python <interface name>.py
+```

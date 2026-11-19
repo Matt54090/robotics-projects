@@ -1,0 +1,129 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2025 Junior Coder Rescue Team
+# (junior.coder.rescue.team@gmail.com)
+#
+# See the LICENSE file in the project root for more details.
+
+# shellcheck source=/dev/null
+
+check_static_annalytics()
+{
+	# static anaytics using cppcheck
+    cppcheck \
+        --enable=all \
+        --inconclusive \
+        --std=c11 \
+        --language=c \
+        --platform=unix64 \
+        --error-exitcode=1 \
+        --verbose \
+        --inline-suppr \
+        --force \
+        --suppress=missingIncludeSystem \
+        .
+
+	RET="$?"
+	if [[ "${RET}" != "0" ]]
+	then
+		echo_func "[SCM ERR] Failed to pass the codes on the cppcheck" 1
+		exit 1
+	fi
+}
+
+check_static_annalytics_for_fw()
+{
+    if ! ls ./*.c >/dev/null 2>&1; then
+        echo_func "[SCM Warning] no .c files: $(pwd)" 1
+        return 0
+    fi
+
+    cppcheck \
+        --enable=warning,performance,portability \
+        --check-level=exhaustive \
+        --std=c11 \
+        --error-exitcode=1 \
+        --force \
+        -Ihal_mock \
+        -Iapp \
+        -Idevices \
+        -Ibsp \
+        -Icommon \
+        ./*.c
+
+	RET="$?"
+	if [[ "${RET}" != "0" ]]
+	then
+		echo_func "[SCM ERR] Failed to pass the codes for FW" 1
+		exit 1
+	fi
+}
+
+set -e
+
+ROOT_DIR=$(git rev-parse --show-toplevel)
+source "${ROOT_DIR}/scm/scripts/common/echo.sh"
+
+PI_DIR="${ROOT_DIR}/os/pi4"
+GPIO_DIR="${PI_DIR}/gpio/c"
+UART_DIR="${PI_DIR}/uart/c"
+PWM_DIR="${PI_DIR}/pwm/c"
+
+FIRMWARE_DIR="${ROOT_DIR}/firmware"
+STM32_DIR="${FIRMWARE_DIR}/stm32f4-discovery"
+FW_GPIO_DIR="${STM32_DIR}/gpio"
+FW_UART_DIR="${STM32_DIR}/uart"
+FW_PWM_LED_DIR="${STM32_DIR}/pwm/led"
+FW_PWM_SERVO_DIR="${STM32_DIR}/pwm/servo"
+FW_I2C_LCD_DIR="${STM32_DIR}/i2c/lcd"
+FW_I2C_ACCEL_DIR="${STM32_DIR}/i2c/mpu6050"
+FW_SPI_KEYPAD_DIR="${STM32_DIR}/spi/keypad"
+FW_SPI_RFID_DIR="${STM32_DIR}/spi/rfid"
+FW_ADC_DIR="${STM32_DIR}/adc"
+FW_TIMER_DIR="${STM32_DIR}/timer"
+
+TEST_DIRS=(
+    "${GPIO_DIR}"
+    "${UART_DIR}"
+    "${PWM_DIR}"
+)
+
+cd "${ROOT_DIR}" || exit 1
+for DIR in "${TEST_DIRS[@]}"
+do
+    cd "${DIR}" || exit 1
+    echo_func "[scm] Current Directory: ${DIR}" 0
+    check_static_annalytics
+    cd "${ROOT_DIR}" || exit 1
+done
+
+TEST_FW_DIRS=(
+    "${FW_GPIO_DIR}"
+    "${FW_UART_DIR}"
+    "${FW_PWM_LED_DIR}"
+    "${FW_PWM_SERVO_DIR}"
+    "${FW_I2C_LCD_DIR}"
+    "${FW_I2C_ACCEL_DIR}"
+    "${FW_SPI_KEYPAD_DIR}"
+    "${FW_SPI_RFID_DIR}"
+    "${FW_ADC_DIR}"
+    "${FW_TIMER_DIR}"
+)
+
+cd "${ROOT_DIR}" || exit 1
+for DIR in "${TEST_FW_DIRS[@]}"
+do
+    cd "${DIR}" || exit 1
+    SUB_DIRS=$(find . -maxdepth 1 -type d ! -name .)
+    for SUB_DIR in ${SUB_DIRS}
+    do
+        cd "${SUB_DIR}" || exit 1
+        echo_func "[scm] Current Directory: ${DIR}/${SUB_DIR}" 0
+        check_static_annalytics_for_fw
+        cd .. || exit 1
+    done
+    cd "${ROOT_DIR}" || exit 1
+done
+
+echo_func "[scm] Static Analytics CI test done!" 0

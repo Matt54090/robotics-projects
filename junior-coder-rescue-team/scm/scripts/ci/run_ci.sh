@@ -1,0 +1,29 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+#
+# Copyright (c) 2025 Junior Coder Rescue Team
+# (junior.coder.rescue.team@gmail.com)
+#
+# See the LICENSE file in the project root for more details.
+
+SCRIPT_DIR="./scm/scripts"
+CI_DIR="${SCRIPT_DIR}/ci"
+ROOT_DIR=$(git rev-parse --show-toplevel)
+
+set -e
+
+cd "${ROOT_DIR}"
+
+# general
+bash ${CI_DIR}/general_ci.sh
+
+# lang check
+bash ${CI_DIR}/bash_ci.sh
+bash ${CI_DIR}/clang_ci.sh
+bash ${CI_DIR}/python_ci.sh
+
+# static anaytics
+bash ${CI_DIR}/static_analytics.sh
+
+# build
+bash ${CI_DIR}/clang_build.sh
